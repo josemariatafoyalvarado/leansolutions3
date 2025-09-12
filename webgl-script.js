@@ -1,82 +1,139 @@
-/* Este script se encarga de crear el fondo animado de WebGL */
-function getCanvas(el) {
-    el = el || document.body;
-    var canvas = document.createElement("canvas");
-    el.appendChild(canvas);
-    return canvas;
-}
-function resizeCanvas(canvas) {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.onresize = function() {
-    resizeCanvas(document.getElementById("webgl-bg"));
-};
-
-var config = {
-    color: "68, 149, 255", // Color del fondo animado (RGB)
-    radius: 0.9,
-    density: 0.2,
-    clearOpacity: 0.1,
-    speed: 0.05
-};
-
-var webgl = {
-    init: function() {
-        this.canvas = document.getElementById("webgl-bg");
-        if (!this.canvas) return;
-
-        resizeCanvas(this.canvas);
-        
-        try {
-            this.gl = this.canvas.getContext("webgl", {
-                alpha: false
-            });
-        } catch (e) {
-            console.error("WebGL no es compatible con este navegador.");
-            return;
-        }
-
-        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        this.gl.enable(this.gl.BLEND);
-        this.gl.disable(this.gl.DEPTH_TEST);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
-        this.buffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, -1, 1, 1]), this.gl.STATIC_DRAW);
-        this.program = this.gl.createProgram();
-        this.shader(this.gl.VERTEX_SHADER, "attribute vec2 position;\nvoid main(void) {\n    gl_Position = vec4(position, 0., 1.);\n}");
-        this.shader(this.gl.FRAGMENT_SHADER, "precision mediump float;\nuniform vec2 resolution;\nuniform float time;\nuniform vec3 color;\nvoid main(void) {\n    vec2 position = (gl_FragCoord.xy / resolution.xy) - 0.5;\n    float t = time * " + config.speed + ";\n    float v = 0.0;\n    float x = 0.0;\n    for(int i = 0; i < 50; i++) {\n        v += dot(sin(position * " + config.density + " * x + t), cos(position * " + config.density + " * x + t));\n        x += " + config.radius + ";\n    }\n    gl_FragColor = vec4(vec3(v), 1.0) * vec4(color / 255.0, 1.0);\n}");
-        this.gl.linkProgram(this.program);
-        this.gl.useProgram(this.program);
-        this.gl.a = this.gl.getAttribLocation(this.program, "position");
-        this.time = this.gl.getUniformLocation(this.program, "time");
-        this.resolution = this.gl.getUniformLocation(this.program, "resolution");
-        this.color = this.gl.getUniformLocation(this.program, "color");
-        this.gl.enableVertexAttribArray(this.gl.a);
-        this.gl.vertexAttribPointer(this.gl.a, 2, this.gl.FLOAT, false, 0, 0);
-        this.gl.uniform3f(this.color, config.color.split(',')[0], config.color.split(',')[1], config.color.split(',')[2]);
-        this.render();
-    },
-    shader: function(type, source) {
-        var shader = this.gl.createShader(type);
-        this.gl.shaderSource(shader, source);
-        this.gl.compileShader(shader);
-        if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
-            console.error("SHADER ERROR:", this.gl.getShaderInfoLog(shader));
-            return;
-        }
-        this.gl.attachShader(this.program, shader);
-    },
-    render: function(time) {
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-        this.gl.uniform1f(this.time, time / 1000);
-        this.gl.uniform2f(this.resolution, this.canvas.width, this.canvas.height);
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
-        requestAnimationFrame(this.render.bind(this));
+/*
+ * Este script crea un fondo animado de líneas fluidas y reactivas.
+ * Las partículas se mueven con más velocidad y responden de forma más notable
+ * al cursor, creando una experiencia visual envolvente y dinámica.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('webgl-bg');
+    if (!canvas) {
+        console.error("No se encontró el elemento <canvas> con el ID 'webgl-bg'.");
+        return;
     }
-};
 
-window.onload = function() {
-    webgl.init();
-};
+    const ctx = canvas.getContext('2d');
+    let W, H, particles, mouse;
+    const maxParticles = 120;
+    
+    // Objeto para rastrear la posición del mouse
+    mouse = {
+        x: W / 2,
+        y: H / 2,
+        radius: (W + H) / 6 // Radio de interacción ampliado
+    };
+
+    function resizeCanvas() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        mouse.radius = (W + H) / 6;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Actualiza la posición del mouse
+    canvas.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * W;
+            this.y = Math.random() * H;
+            this.vx = (Math.random() - 0.5) * 0.3; // Velocidad incrementada
+            this.vy = (Math.random() - 0.5) * 0.3; // Velocidad incrementada
+            this.radius = Math.random() * 1.5 + 0.5;
+            this.history = []; // Para el efecto de estela
+        }
+
+        draw() {
+            // Dibuja la estela
+            ctx.beginPath();
+            ctx.moveTo(this.history[0]?.x || this.x, this.history[0]?.y || this.y);
+            for (let i = 1; i < this.history.length; i++) {
+                ctx.lineTo(this.history[i].x, this.history[i].y);
+            }
+            ctx.strokeStyle = `rgba(110, 168, 216, 0.2)`; // Estela tenue
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // Dibuja la partícula
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fill();
+        }
+
+        update() {
+            // Guarda el historial de posición
+            this.history.push({x: this.x, y: this.y});
+            if (this.history.length > 5) { // Longitud de la estela
+                this.history.shift();
+            }
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Mantiene las partículas dentro del lienzo
+            if (this.x < 0 || this.x > W) this.vx *= -1;
+            if (this.y < 0 || this.y > H) this.vy *= -1;
+        }
+    }
+
+    function createParticles() {
+        particles = [];
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, W, H);
+        
+        ctx.save();
+        ctx.filter = 'blur(10px)';
+        ctx.fillStyle = 'rgba(26, 115, 232, 0.05)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.update();
+            p.draw();
+
+            // Dibuja líneas entre partículas cercanas
+            for (let j = i + 1; j < particles.length; j++) {
+                const p2 = particles[j];
+                const dx = p.x - p2.x;
+                const dy = p.y - p2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = `rgba(110, 168, 216, ${1 - dist / 150})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+
+            // Dibuja líneas desde el mouse a las partículas cercanas
+            const dx_mouse = p.x - mouse.x;
+            const dy_mouse = p.y - mouse.y;
+            const dist_mouse = Math.sqrt(dx_mouse * dx_mouse + dy_mouse * dy_mouse);
+            
+            if (dist_mouse < mouse.radius) {
+                ctx.beginPath();
+                ctx.moveTo(mouse.x, mouse.y);
+                ctx.lineTo(p.x, p.y);
+                ctx.strokeStyle = `rgba(110, 168, 216, ${1 - dist_mouse / mouse.radius})`;
+                ctx.lineWidth = 2; // Líneas más gruesas para destacar
+                ctx.stroke();
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+    
+    createParticles();
+    animate();
+});
