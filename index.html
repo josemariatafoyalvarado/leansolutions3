@@ -58,10 +58,15 @@
 </head>
 <body>
     
-    <header>
-        <div class="logo">
-            <a href="index.html"><img src="logo.png" alt="Lean Solutions"></a>
-        </div>
+    <div class="floating-logo">
+        <a href="index.html"><img src="logo.png" alt="Lean Solutions"></a>
+    </div>
+
+    <button class="menu-toggle-button" id="open-menu-btn">
+        <i class="fas fa-ellipsis-v"></i> </button>
+
+    <div class="sidebar-menu" id="sidebar-menu">
+        <button class="close-menu-button" id="close-menu-btn">&times;</button>
         <nav id="nav-links">
             <a href="index.html">Inicio</a>
             <a href="services.html">Servicios</a>
@@ -71,7 +76,7 @@
             <button id="panel-btn" style="display:none;">Panel</button>
             <button id="logout-btn" style="display:none;">Cerrar sesión</button>
         </nav>
-    </header>
+    </div>
 
     <main>
         
@@ -195,6 +200,11 @@
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const closeButton = document.querySelector('.close-button');
+
+        // Nuevos elementos para el menú flotante
+        const openMenuBtn = document.getElementById('open-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const sidebarMenu = document.getElementById('sidebar-menu');
         
         document.addEventListener('DOMContentLoaded', () => {
             initApp();
@@ -210,10 +220,13 @@
             document.addEventListener('keydown', (event) => {
                 if (event.key === "Escape") {
                     closeLoginModal();
+                    closeSidebarMenu(); // Cerrar también el menú lateral
                 }
             });
+
             if (loginBtn) {
                 loginBtn.addEventListener('click', () => {
+                    closeSidebarMenu(); // Cerrar el menú lateral antes de abrir el modal de login
                     loginModal.style.display = 'flex';
                 });
             }
@@ -224,6 +237,7 @@
                     }).catch((error) => {
                         console.error("Error al cerrar sesión:", error);
                     });
+                    closeSidebarMenu(); // Cerrar el menú después de cerrar sesión
                 });
             }
             if (panelBtn) {
@@ -238,6 +252,20 @@
                 signinBtn.addEventListener('click', handleSignIn);
             }
 
+            // Lógica para abrir y cerrar el menú flotante
+            if (openMenuBtn) {
+                openMenuBtn.addEventListener('click', openSidebarMenu);
+            }
+            if (closeMenuBtn) {
+                closeMenuBtn.addEventListener('click', closeSidebarMenu);
+            }
+            // Cerrar menú al hacer clic fuera de él (pero no si haces clic en el botón de abrir)
+            window.addEventListener('click', (event) => {
+                if (sidebarMenu.classList.contains('open') && !sidebarMenu.contains(event.target) && event.target !== openMenuBtn && !openMenuBtn.contains(event.target)) {
+                    closeSidebarMenu();
+                }
+            });
+            
             // Animación al hacer scroll
             const sections = document.querySelectorAll('section');
             const observer = new IntersectionObserver((entries) => {
@@ -346,6 +374,13 @@
           loginModal.style.display = 'none';
           clearError();
         }
+        function openSidebarMenu() {
+            sidebarMenu.classList.add('open');
+        }
+        function closeSidebarMenu() {
+            sidebarMenu.classList.remove('open');
+        }
+
         async function handleRegistration() {
             clearError();
             const email = emailInput.value;

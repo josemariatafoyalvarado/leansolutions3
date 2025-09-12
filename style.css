@@ -3,6 +3,7 @@
     --text-color: #e0e0e0;
     --accent-color: #1a73e8;
     --section-bg: rgba(25, 30, 45, 0.7);
+    --menu-bg-color: rgba(11, 15, 26, 0.95); /* Fondo del menú desplegable */
 }
 
 body {
@@ -14,76 +15,143 @@ body {
     overflow-x: hidden;
 }
 
-/* Encabezado */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 80px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(11, 15, 26, 0.8);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    transition: background-color 0.3s ease;
+/* Logo Flotante */
+.floating-logo {
+    position: fixed;
+    top: 30px;
+    left: 40px;
+    z-index: 1050; /* Más alto que el menú */
 }
 
-header .logo img {
-    height: 50px;
+.floating-logo img {
+    height: 60px; /* Un poco más grande para destacar */
     width: auto;
     object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-nav {
+.floating-logo img:hover {
+    transform: scale(1.05);
+}
+
+/* Botón de Menú Flotante */
+.menu-toggle-button {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    z-index: 1060; /* Más alto que el logo y el menú */
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.8em;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 15px; /* Espaciado ajustado entre elementos de la navegación */
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
-/* Estilos de navegación unificados para enlaces y botones */
-nav a, nav button {
-    color: var(--text-color);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1em;
-    padding: 10px 18px; /* Padding unificado para todos los elementos */
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-    background-color: transparent; /* Fondo transparente por defecto */
+.menu-toggle-button:hover {
+    background: #155bb5; /* Tono más oscuro al pasar el ratón */
+    transform: scale(1.05);
 }
-nav a:hover, nav button:hover {
-    color: var(--accent-color);
+
+/* Menú Sidebar / Overlay */
+.sidebar-menu {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Inicialmente fuera de la pantalla */
+    width: 300px;
+    height: 100%;
+    background: var(--menu-bg-color);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1055;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    transition: right 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px; /* Espacio para el botón de cerrar */
+}
+
+.sidebar-menu.open {
+    right: 0;
+}
+
+.sidebar-menu nav {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 30px;
+    gap: 20px;
+}
+
+.sidebar-menu nav a,
+.sidebar-menu nav button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    color: var(--text-color);
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.sidebar-menu nav a:hover,
+.sidebar-menu nav button:hover {
     background-color: rgba(26, 115, 232, 0.1);
     border-color: rgba(26, 115, 232, 0.3);
+    color: var(--accent-color);
 }
 
-/* Estilo específico para el botón principal de acceso */
-#login-btn, #register-btn, #signin-btn {
+.sidebar-menu nav button#login-btn,
+.sidebar-menu nav button#register-btn,
+.sidebar-menu nav button#signin-btn {
     background: var(--accent-color);
     color: white;
     border-color: var(--accent-color);
 }
 
-#login-btn:hover, #register-btn:hover, #signin-btn:hover {
-    background: #155bb5; /* Un tono más oscuro para el hover */
-    transform: none;
-    box-shadow: none;
+.sidebar-menu nav button#login-btn:hover,
+.sidebar-menu nav button#register-btn:hover,
+.sidebar-menu nav button#signin-btn:hover {
+    background: #155bb5;
 }
-/* Estilos para los botones que se muestran después de iniciar sesión */
-#panel-btn, #logout-btn {
-    background: none;
+
+.sidebar-menu nav button#panel-btn,
+.sidebar-menu nav button#logout-btn {
     border-color: var(--text-color);
+    background: none;
 }
-#panel-btn:hover, #logout-btn:hover {
+.sidebar-menu nav button#panel-btn:hover,
+.sidebar-menu nav button#logout-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Sección Hero */
+
+.close-menu-button {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.2em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.close-menu-button:hover {
+    transform: rotate(90deg);
+}
+
+/* Sección Hero (el header anterior ha sido eliminado) */
 .hero {
-    min-height: calc(100vh - 90px);
+    min-height: 100vh; /* Ocupa toda la altura visible */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -255,16 +323,20 @@ input {
 }
 
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 20px;
+    .floating-logo {
+        top: 20px;
+        left: 20px;
+    }
+    .menu-toggle-button {
+        top: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.5em;
+    }
+    .sidebar-menu {
+        width: 250px; /* Menú más estrecho en móviles */
     }
     .hero h1 { font-size: 2.5em; }
     .hero p { font-size: 1.2em; }
-    nav {
-        margin-top: 15px;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 }
