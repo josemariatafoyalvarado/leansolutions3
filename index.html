@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean Solutions - Innovación en Formación</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+
+    <style>
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.7);
+          justify-content: center;
+          align-items: center;
+      }
+      .modal-content {
+          background-color: #fefefe;
+          margin: auto;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+          max-width: 500px;
+          width: 90%;
+          position: relative;
+      }
+      .close-button {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+          color: #aaa;
+      }
+      .close-button:hover, .close-button:focus {
+          color: #000;
+          text-decoration: none;
+      }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="logo.png" alt="Lean Solutions"></a>
+        </div>
+        <nav id="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="services.html">Servicios</a>
+            <a href="about.html">Acerca</a>
+            <a href="contact.html">Contacto</a>
+            <button id="login-btn">Acceso</button>
+            <button id="panel-btn" style="display:none;">Panel</button>
+            <button id="logout-btn" style="display:none;">Cerrar sesión</button>
+        </nav>
+    </header>
+
+    <main>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Transforma el Potencial de Tu Organización</h1>
+                <p>Nuestra consultoría está especializada en la formación de líderes y la optimización de procesos para impulsar la innovación y la excelencia operativa.</p>
+                <button class="cta-button">Explora Nuestros Servicios</button>
+            </div>
+        </section>
+
+        <section class="courses-section">
+            <h2 class="section-title">Nuestros Cursos Destacados</h2>
+            <div class="course-accordion">
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-chart-line mr-3"></i> Lean Six Sigma</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Domina las herramientas y metodologías de Lean Six Sigma para optimizar procesos, reducir costos y mejorar la calidad en cualquier industria. Nuestro programa te prepara para obtener certificaciones reconocidas globalmente.</p>
+                        <p>Aprenderás a analizar datos, identificar cuellos de botella y liderar proyectos de mejora continua. Ideal para profesionales que buscan un impacto tangible en sus organizaciones.</p>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-users-cog mr-3"></i> Liderazgo Lean</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Este curso se enfoca en desarrollar las habilidades de liderazgo necesarias para fomentar una cultura de mejora continua y empoderamiento en los equipos. Va más allá de las herramientas, abordando la mentalidad necesaria para un liderazgo efectivo.</p>
+                        <p>Aprende a guiar a tus equipos, resolver problemas complejos y crear un entorno de trabajo colaborativo y de alto rendimiento. Un *must* para gerentes y líderes de equipo.</p>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-lightbulb mr-3"></i> Principios Kaizen</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Descubre el poder de los pequeños cambios continuos. Este curso te enseña a implementar la filosofía japonesa Kaizen para lograr mejoras incrementales y sostenibles que, con el tiempo, conducen a resultados extraordinarios.</p>
+                        <p>Ideal para equipos de cualquier nivel, desde el personal de operaciones hasta la alta dirección. Transforma tu forma de pensar sobre la innovación y la optimización.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="faq-item">
+                    <h3>¿Qué es Lean Solutions?</h3>
+                    <div class="faq-answer">Somos una consultora especializada en formación y capacitación en metodologías de mejora continua.</div>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Cómo me inscribo en un curso?</h3>
+                    <div class="faq-answer">Puedes inscribirte a través de nuestra plataforma en línea. Solo necesitas crear una cuenta y seleccionar el curso de tu interés.</div>
+                </div>
+                <div class="faq-item">
+                    <h3>¿Los cursos son presenciales o en línea?</h3>
+                    <div class="faq-answer">Ofrecemos cursos en ambos formatos: presenciales en nuestras oficinas y en línea para que puedas aprender a tu propio ritmo.</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
+    </footer>
+    
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h2>Acceso a Lean Solutions</h2>
+        <form id="auth-form" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md shadow-sm">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium">Contraseña</label>
+            <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md shadow-sm">
+          </div>
+          <div id="error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
+          <div class="flex justify-between items-center space-x-4">
+            <button type="button" id="register-btn" class="w-1/2 py-3 px-5 rounded-md text-white font-bold transition-colors">Registrarse</button>
+            <button type="button" id="signin-btn" class="w-1/2 py-3 px-5 rounded-md text-white font-bold transition-colors">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAAXJ-wklT3mfxdQO16DDwmAriYxroiEKA",
+            authDomain: "cursos-7ae54.firebaseapp.com",
+            projectId: "cursos-7ae54",
+            storageBucket: "cursos-7ae54.firebasestorage.app",
+            messagingSenderId: "356389037138",
+            appId: "1:356389037138:web:bdc9cd1c2a8acfd2bbab8b",
+            measurementId: "G-XV8TV6P3Z1"
+        };
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let auth;
+        let db;
+        const loginModal = document.getElementById('login-modal');
+        const errorMessage = document.getElementById('error-message');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const panelBtn = document.getElementById('panel-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const signinBtn = document.getElementById('signin-btn');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const closeButton = document.querySelector('.close-button');
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+
+            if (closeButton) {
+                closeButton.addEventListener('click', closeLoginModal);
+            }
+            window.addEventListener('click', (event) => {
+                if (event.target === loginModal) {
+                    closeLoginModal();
+                }
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === "Escape") {
+                    closeLoginModal();
+                }
+            });
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    loginModal.style.display = 'flex';
+                });
+            }
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    signOut(auth).then(() => {
+                        console.log("Sesión cerrada correctamente.");
+                    }).catch((error) => {
+                        console.error("Error al cerrar sesión:", error);
+                    });
+                });
+            }
+            if (panelBtn) {
+                panelBtn.addEventListener('click', () => {
+                    window.location.href = "panel.html";
+                });
+            }
+            if (registerBtn) {
+                registerBtn.addEventListener('click', handleRegistration);
+            }
+            if (signinBtn) {
+                signinBtn.addEventListener('click', handleSignIn);
+            }
+
+            // Animación al hacer scroll
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Lógica para el acordeón de cursos
+            const courseItems = document.querySelectorAll('.course-header');
+            courseItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const parent = item.parentElement;
+                    const details = parent.querySelector('.course-details');
+                    const icon = item.querySelector('.toggle-icon');
+
+                    // Cierra otros elementos del acordeón si están abiertos
+                    document.querySelectorAll('.course-item.active').forEach(activeItem => {
+                        if (activeItem !== parent) {
+                            activeItem.classList.remove('active');
+                            activeItem.querySelector('.course-details').style.maxHeight = null;
+                            activeItem.querySelector('.toggle-icon').classList.remove('fa-minus');
+                            activeItem.querySelector('.toggle-icon').classList.add('fa-plus');
+                        }
+                    });
+
+                    // Toglea el elemento actual
+                    parent.classList.toggle('active');
+                    if (parent.classList.contains('active')) {
+                        details.style.maxHeight = details.scrollHeight + "px";
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-minus');
+                    } else {
+                        details.style.maxHeight = null;
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
+                    }
+                });
+            });
+
+            // Lógica para el FAQ
+            const faqItems = document.querySelectorAll('.faq-item h3');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const answer = item.nextElementSibling;
+                    const allAnswers = document.querySelectorAll('.faq-answer');
+                    allAnswers.forEach(ans => {
+                        if (ans !== answer) {
+                            ans.style.display = 'none';
+                        }
+                    });
+                    
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                    } else {
+                        answer.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        function initApp() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                if (initialAuthToken) {
+                    signInWithCustomToken(auth, initialAuthToken).catch(error => {
+                        console.error("Error al iniciar sesión con token personalizado:", error);
+                        signInAnonymously(auth);
+                    });
+                } else {
+                    signInAnonymously(auth);
+                }
+                onAuthStateChanged(auth, user => {
+                    if (user) {
+                        loginBtn.style.display = 'none';
+                        logoutBtn.style.display = 'block';
+                        panelBtn.style.display = 'block';
+                    } else {
+                        loginBtn.style.display = 'block';
+                        logoutBtn.style.display = 'none';
+                        panelBtn.style.display = 'none';
+                    }
+                });
+            } catch (error) {
+                console.error("Error en la inicialización de la app:", error);
+                displayError("Error al inicializar la aplicación. Intenta de nuevo.");
+            }
+        }
+        function displayError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+        function clearError() {
+            errorMessage.textContent = '';
+            errorMessage.classList.add('hidden');
+        }
+        function closeLoginModal() {
+          loginModal.style.display = 'none';
+          clearError();
+        }
+        async function handleRegistration() {
+            clearError();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            if (!email || !password) {
+                displayError('Por favor, ingresa un correo y una contraseña.');
+                return;
+            }
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                closeLoginModal();
+                window.location.replace("panel.html");
+            } catch (error) {
+                let message = 'Error de registro. Por favor, intenta de nuevo.';
+                switch(error.code) {
+                    case 'auth/email-already-in-use':
+                        message = 'El correo electrónico ya está en uso. Por favor, inicia sesión.';
+                        break;
+                    case 'auth/weak-password':
+                        message = 'La contraseña debe tener al menos 6 caracteres.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'El correo electrónico no es válido.';
+                        break;
+                    default:
+                        message = 'Error desconocido: ' + error.message;
+                        break;
+                }
+                displayError(message);
+            }
+        }
+        async function handleSignIn() {
+            clearError();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            if (!email || !password) {
+                displayError('Por favor, ingresa un correo y una contraseña.');
+                return;
+            }
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                closeLoginModal();
+                window.location.replace("panel.html");
+            } catch (error) {
+                let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
+                switch(error.code) {
+                    case 'auth/invalid-credential':
+                        message = 'Credenciales inválidas. Revisa tu correo y contraseña.';
+                        break;
+                    case 'auth/invalid-email':
+                        message = 'El correo electrónico no es válido.';
+                        break;
+                    case 'auth/wrong-password':
+                        message = 'Contraseña incorrecta.';
+                        break;
+                    case 'auth/user-not-found':
+                        message = 'El usuario no existe.';
+                        break;
+                    default:
+                        message = 'Error desconocido: ' + error.message;
+                        break;
+                }
+                displayError(message);
+            }
+        }
+    </script>
+</body>
+</html>

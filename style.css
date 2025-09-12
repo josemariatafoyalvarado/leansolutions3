@@ -1,0 +1,270 @@
+:root {
+    --bg-color: #0b0f1a;
+    --text-color: #e0e0e0;
+    --accent-color: #1a73e8;
+    --section-bg: rgba(25, 30, 45, 0.7);
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 80px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(11, 15, 26, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background-color 0.3s ease;
+}
+
+header .logo img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaciado ajustado entre elementos de la navegación */
+}
+
+/* Estilos de navegación unificados para enlaces y botones */
+nav a, nav button {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1em;
+    padding: 10px 18px; /* Padding unificado para todos los elementos */
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    background-color: transparent; /* Fondo transparente por defecto */
+}
+nav a:hover, nav button:hover {
+    color: var(--accent-color);
+    background-color: rgba(26, 115, 232, 0.1);
+    border-color: rgba(26, 115, 232, 0.3);
+}
+
+/* Estilo específico para el botón principal de acceso */
+#login-btn, #register-btn, #signin-btn {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+#login-btn:hover, #register-btn:hover, #signin-btn:hover {
+    background: #155bb5; /* Un tono más oscuro para el hover */
+    transform: none;
+    box-shadow: none;
+}
+/* Estilos para los botones que se muestran después de iniciar sesión */
+#panel-btn, #logout-btn {
+    background: none;
+    border-color: var(--text-color);
+}
+#panel-btn:hover, #logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sección Hero */
+.hero {
+    min-height: calc(100vh - 90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background: url('https://images.pexels.com/photos/3184423/pexels-photo-3184423.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') no-repeat center center/cover;
+    position: relative;
+    color: white;
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+}
+
+.hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5em;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+}
+
+.hero p {
+    font-size: 1.5em;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+
+.cta-button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+.cta-button:hover {
+    background: #155bb5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Secciones de Contenido */
+section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 40px auto;
+    text-align: center;
+    background-color: var(--section-bg);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    transform: translateY(30px);
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease-out;
+}
+
+section.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+/* Estilos de Acordeón de Cursos */
+.course-accordion {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.course-item {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.course-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.course-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.toggle-icon {
+    font-size: 1.5em;
+    color: var(--accent-color);
+    transition: transform 0.3s ease;
+}
+
+.course-item.active .toggle-icon {
+    transform: rotate(45deg);
+}
+
+.course-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    padding: 0 20px;
+}
+
+.course-item.active .course-details {
+    max-height: 500px;
+    padding: 20px;
+}
+.course-details p {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+/* Footer */
+footer {
+    background-color: #0d1222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Modal */
+.modal-content {
+    background-color: rgba(25, 30, 45, 0.9);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+input {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .hero h1 { font-size: 2.5em; }
+    .hero p { font-size: 1.2em; }
+    nav {
+        margin-top: 15px;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
