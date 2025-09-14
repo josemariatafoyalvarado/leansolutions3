@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Lean Solutions</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+
+</head>
+<body>
+    
+    <canvas id="webgl-bg"></canvas>
+
+    <div class="floating-logo">
+        <a href="index.html"><img src="logo.png" alt="Lean Solutions"></a>
+    </div>
+    
+    <button class="menu-toggle-button" id="open-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <aside class="sidebar-menu" id="sidebar-menu">
+        <button class="close-menu-button" id="close-menu-btn">&times;</button>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="services.html">Servicios</a>
+            <a href="about.html">Acerca</a>
+            <a href="contact.html">Contacto</a>
+            <button id="login-btn">Acceso</button>
+            <button id="panel-btn" style="display:none;">Panel</button>
+            <button id="logout-btn" style="display:none;">Cerrar sesión</button>
+        </nav>
+    </aside>
+
+    <main class="page-container">
+
+        <section class="contact-hero-section">
+            <div class="contact-content-wrapper">
+                <div class="contact-carousel-container reveal-item">
+                    <div class="owl-carousel owl-theme contact-carousel">
+                        <div class="item">
+                            <img src="https://images.unsplash.com/photo-1552664730-d307aa945f3c?q=80&w=2670&auto=format&fit=crop" alt="Equipo de negocios en reunión">
+                        </div>
+                        <div class="item">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop" alt="Consultoría">
+                        </div>
+                        <div class="item">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734b641?q=80&w=2670&auto=format&fit=crop" alt="Capacitación">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container glass-card reveal-item">
+                    <h2 class="section-title text-white mb-8 text-center md:text-left">Hablemos de tu proyecto</h2>
+                    <p class="text-gray-300 mb-6 text-center md:text-left">Completa el formulario y te contactaremos a la brevedad para entender tus necesidades.</p>
+                    <form class="contact-form-design space-y-4">
+                        <div class="form-group">
+                            <label for="name" class="block text-gray-400">Nombre Completo</label>
+                            <input type="text" id="name" name="name" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="block text-gray-400">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" class="block text-gray-400">Asunto</label>
+                            <input type="text" id="subject" name="subject" required class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="block text-gray-400">Mensaje</label>
+                            <textarea id="message" name="message" required class="form-input"></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-info-section reveal-item">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="info-card-design">
+                    <i class="fas fa-phone-alt text-4xl mb-4 text-accent"></i>
+                    <h3 class="text-xl font-bold text-white">Teléfono</h3>
+                    <p class="text-gray-300 mt-2">+52 55 1234 5678</p>
+                </div>
+                <div class="info-card-design">
+                    <i class="fas fa-envelope text-4xl mb-4 text-accent"></i>
+                    <h3 class="text-xl font-bold text-white">Correo</h3>
+                    <p class="text-gray-300 mt-2">contacto@leansolutions.com</p>
+                </div>
+                <div class="info-card-design">
+                    <i class="fas fa-map-marker-alt text-4xl mb-4 text-accent"></i>
+                    <h3 class="text-xl font-bold text-white">Dirección</h3>
+                    <p class="text-gray-300 mt-2">Av. Principal #123, Ciudad de México</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section reveal-item">
+            <h2 class="section-title text-center text-white mb-8">Nuestra Ubicación</h2>
+            <div class="map-container">
+                 <div class="map-link-overlay">
+                    <a href="https://www.google.com/maps/place/Ciudad+de+M%C3%A9xico/@19.4326077,-99.1332715,13z/data=!4m6!3m5!1s0x85d1fed39c4d9b23:0x6b1424e16d44f7b0!8m2!3d19.4326077!4d-99.1332715!16zL20vMGx0Z2s?entry=ttu" target="_blank" class="map-button">
+                        Ver en Google Maps
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="modal-close-btn">&times;</span>
+        <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Acceso a Lean Solutions</h2>
+        <form id="auth-form" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div id="error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
+          <div class="flex justify-between items-center space-x-4">
+            <button type="button" id="register-btn" class="w-1/2 bg-blue-500 py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-blue-600">Registrarse</button>
+            <button type="button" id="signin-btn" class="w-1/2 bg-blue-700 py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-blue-800">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+        <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="webgl-script.js"></script>
+    <script src="app.js" type="module"></script>
+</body>
+</html>
