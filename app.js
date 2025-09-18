@@ -1,21 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM Cargado. Inicializando la aplicación.");
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAAXJ-wklT3mfxdQO16DDwmAriYxroiEKA",
-        authDomain: "cursos-7ae54.firebaseapp.com",
-        projectId: "cursos-7ae54",
-        storageBucket: "cursos-7ae54.firebasestorage.app",
-        messagingSenderId: "356389037138",
-        appId: "1:356389037138:web:bdc9cd1c2a8acfd2bbab8b",
-        measurementId: "G-XV8TV6P3Z1"
-    };
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
     let auth;
     let db;
+    let userId;
+
     const loginModal = document.getElementById('login-modal');
     const errorMessage = document.getElementById('error-message');
     const loginBtn = document.getElementById('login-btn');
@@ -35,38 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageText = document.getElementById('message-text');
     const messageCloseBtn = document.getElementById('message-close-btn');
 
-    function setupCarousel() {
-        const carouselElement = document.querySelector('.hero-carousel');
-        if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
-            $('.hero-carousel').owlCarousel({
-                loop: true,
-                margin: 0,
-                nav: false,
-                dots: false,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: false,
-                animateOut: 'fadeOut',
-                animateIn: 'fadeIn',
-                items: 1
-            });
+    function closeSidebarMenu() {
+        if (sidebarMenu) {
+            sidebarMenu.classList.remove('open');
         }
     }
 
-    function setupMenu() {
-        const menuToggleButton = document.getElementById('menu-toggle') || document.getElementById('menu-toggle-btn') || document.getElementById('open-menu-btn');
-        if (menuToggleButton && sidebarMenu && closeMenuButton) {
-            menuToggleButton.addEventListener('click', () => {
-                sidebarMenu.classList.add('open');
-            });
-            closeMenuButton.addEventListener('click', () => {
-                sidebarMenu.classList.remove('open');
-            });
-            document.addEventListener('click', (e) => {
-                if (!sidebarMenu.contains(e.target) && !menuToggleButton.contains(e.target)) {
-                    sidebarMenu.classList.remove('open');
-                }
-            });
+    function showMessageModal(title, text) {
+        if (messageModal) {
+            messageTitle.textContent = title;
+            messageText.textContent = text;
+            messageModal.style.display = 'flex';
+        }
+    }
+
+    function closeMessageModal() {
+        if (messageModal) {
+            messageModal.style.display = 'none';
         }
     }
 
@@ -91,17 +73,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showMessageModal(title, text) {
-        if (messageModal) {
-            messageTitle.textContent = title;
-            messageText.textContent = text;
-            messageModal.style.display = 'flex';
+    function setupCarousel() {
+        const carouselElement = document.querySelector('.hero-carousel');
+        if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
+            $('.hero-carousel').owlCarousel({
+                loop: true,
+                margin: 0,
+                nav: false,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: false,
+                animateOut: 'fadeOut',
+                animateIn: 'fadeIn',
+                items: 1
+            });
         }
     }
 
-    function closeMessageModal() {
-        if (messageModal) {
-            messageModal.style.display = 'none';
+    function setupMenu() {
+        const menuToggleButton = document.getElementById('menu-toggle-btn');
+        if (menuToggleButton && sidebarMenu && closeMenuButton) {
+            menuToggleButton.addEventListener('click', () => {
+                sidebarMenu.classList.add('open');
+            });
+            closeMenuButton.addEventListener('click', () => {
+                sidebarMenu.classList.remove('open');
+            });
+            document.addEventListener('click', (e) => {
+                if (!sidebarMenu.contains(e.target) && !menuToggleButton.contains(e.target)) {
+                    sidebarMenu.classList.remove('open');
+                }
+            });
         }
     }
 
@@ -216,39 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 console.log('Formulario enviado:', { name, email, message });
-                formMessage.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.';
-                formMessage.className = 'text-green-500 mt-4';
+                showMessageModal('¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
                 contactForm.reset();
-            });
-        }
-    }
-
-    function setupPanelPage(user) {
-        const userDisplay = document.getElementById('user-display');
-        if (userDisplay && user) {
-            userDisplay.textContent = `Bienvenido, ${user.email}.`;
-        }
-
-        const panelButtons = [
-            'ticket-btn',
-            'material-btn',
-            'available-courses-btn'
-        ];
-        
-        panelButtons.forEach(btnId => {
-            const button = document.getElementById(btnId);
-            if (button) {
-                button.addEventListener('click', () => {
-                    showMessageModal('Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!');
-                });
-            }
-        });
-        
-        // Manejar el clic en "Mis Cursos"
-        const myCoursesBtn = document.getElementById('my-courses-btn');
-        if (myCoursesBtn) {
-            myCoursesBtn.addEventListener('click', () => {
-                window.location.href = 'mis-cursos.html';
             });
         }
     }
@@ -262,7 +234,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            await setDoc(doc(db, `artifacts/${appId}/users/${user.uid}/userData`, user.uid), {
+                email: user.email,
+                createdAt: new Date()
+            });
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
@@ -320,20 +297,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function closeSidebarMenu() {
-        if (sidebarMenu) {
-            sidebarMenu.classList.remove('open');
+    function setupPanelPage(user) {
+        const userDisplay = document.getElementById('user-display');
+        if (userDisplay && user) {
+            userDisplay.textContent = `Bienvenido, ${user.email}.`;
+        }
+        const panelButtons = ['ticket-btn', 'material-btn', 'available-courses-btn'];
+        panelButtons.forEach(btnId => {
+            const button = document.getElementById(btnId);
+            if (button) {
+                button.addEventListener('click', () => {
+                    showMessageModal('Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!');
+                });
+            }
+        });
+        const myCoursesBtn = document.getElementById('my-courses-btn');
+        if (myCoursesBtn) {
+            myCoursesBtn.addEventListener('click', () => {
+                window.location.href = 'mis-cursos.html';
+            });
         }
     }
 
-    function initApp() {
+    async function initApp() {
         try {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
             
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+
             onAuthStateChanged(auth, user => {
                 if (user) {
+                    userId = user.uid;
                     if (loginBtn) loginBtn.style.display = 'none';
                     if (logoutBtn) logoutBtn.style.display = 'block';
                     if (panelBtn) panelBtn.style.display = 'block';
@@ -342,6 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         setupPanelPage(user);
                     }
                 } else {
+                    userId = null;
                     if (loginBtn) loginBtn.style.display = 'block';
                     if (logoutBtn) logoutBtn.style.display = 'none';
                     if (panelBtn) panelBtn.style.display = 'none';
