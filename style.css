@@ -59,7 +59,7 @@ nav {
 }
 
 .logo img {
-    height: 100px; /* Tamaño del logo en escritorio, más grande para mejor visibilidad */
+    height: 50px; /* Tamaño del logo en escritorio, más grande para mejor visibilidad */
     width: auto;
 }
 
