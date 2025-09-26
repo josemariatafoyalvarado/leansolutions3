@@ -5,13 +5,11 @@ import {
     signInWithEmailAndPassword, 
     onAuthStateChanged, 
     signOut 
-    // Se eliminaron: signInWithCustomToken, signInAnonymously (no utilizados)
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { 
     getFirestore, 
     doc, 
     setDoc 
-    // Se eliminaron: collection, addDoc, onSnapshot (no utilizados)
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
       measurementId: "G-XV8TV6P3Z1"
     };
 
-    // Variables no estándar y no utilizadas eliminadas: initialAuthToken, appId
     let auth;
     let db; 
     let userId;
 
-    // Referencias de Elementos del DOM (intactas)
+    // Referencias de Elementos del DOM
     const loginModal = document.getElementById('login-modal');
-    const errorMessage = document.getElementById('error-message');
+    // CORRECCIÓN DE LOGIN: Apunta al ID que se usa en el HTML más reciente
+    const errorMessage = document.getElementById('login-error-message'); 
     const loginBtnDesktop = document.getElementById('login-btn-desktop');
     const loginBtnMobile = document.getElementById('login-btn-mobile');
     const logoutBtnDesktop = document.getElementById('logout-btn-desktop');
@@ -97,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginModal) {
             loginModal.style.display = 'none';
             clearError();
-            // MEJORA: Limpiar los campos al cerrar el modal.
             if (emailInput) emailInput.value = '';
             if (passwordInput) passwordInput.value = '';
         }
@@ -147,17 +144,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * CORRECCIÓN DE MENÚ LATERAL:
+     * 1. Se mantiene el e.stopPropagation() en el botón de abrir.
+     * 2. Se asegura que el listener de documento solo cierre el menú si está abierto.
+     */
     function setupMenu() {
         const menuToggleButton = document.getElementById('menu-toggle-btn');
         if (menuToggleButton && sidebarMenu && closeMenuButton) {
-            menuToggleButton.addEventListener('click', () => {
+            // 1. Abrir menú
+            menuToggleButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // SOLUCIÓN: Evita el conflicto del click fuera
                 sidebarMenu.classList.add('open');
             });
+            
+            // 2. Cerrar menú (Botón interno)
             closeMenuButton.addEventListener('click', () => {
                 sidebarMenu.classList.remove('open');
             });
+            
+            // 3. Cerrar menú (Click fuera)
             document.addEventListener('click', (e) => {
-                if (!sidebarMenu.contains(e.target) && !menuToggleButton.contains(e.target)) {
+                // Solo intenta cerrar si el menú está actualmente abierto
+                if (sidebarMenu.classList.contains('open') && !sidebarMenu.contains(e.target) && !menuToggleButton.contains(e.target)) {
                     sidebarMenu.classList.remove('open');
                 }
             });
@@ -319,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             
-            // CORRECCIÓN: Usar la ruta de Firestore estandarizada "users/{uid}"
             await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
                 createdAt: new Date()
@@ -362,7 +370,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
             switch(error.code) {
-                // Se agrupan los errores comunes de credenciales inválidas para un mensaje unificado
                 case 'auth/invalid-credential':
                 case 'auth/wrong-password':
                 case 'auth/user-not-found':
@@ -408,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
             db = getFirestore(app);
             
             onAuthStateChanged(auth, user => {
-                const isLoggedIn = !!user; // Uso de booleano para lógica más limpia
+                const isLoggedIn = !!user;
                 userId = isLoggedIn ? user.uid : null;
 
                 // Actualizar botones de escritorio

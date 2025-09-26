@@ -100,17 +100,19 @@ nav {
 }
 
 /* --------------------
-    Menú Móvil
+    Menú Móvil (CORREGIDO: Usa transform: translateX)
    -------------------- */
 .sidebar-menu {
     position: fixed;
     top: 0;
-    right: -100%;
+    right: 0; /* Anclado al borde derecho */
     width: 250px;
     height: 100%;
     background: rgba(18, 22, 38, 0.95);
     backdrop-filter: blur(15px);
-    transition: right 0.3s ease-in-out;
+    /* Usamos transform para mejor rendimiento y para solucionar el problema de despliegue */
+    transform: translateX(100%); 
+    transition: transform 0.3s ease-in-out; 
     padding-top: 60px;
     z-index: 999;
     flex-direction: column;
@@ -118,7 +120,7 @@ nav {
 }
 
 .sidebar-menu.open {
-    right: 0;
+    transform: translateX(0); /* Se desliza a su posición normal */
 }
 
 .close-menu-button {
@@ -255,10 +257,6 @@ section {
     transform: none !important; 
     object-fit: cover !important; 
     object-position: center center !important; 
-}
-
-.hero-carousel .animated {
-    animation-duration: 1.5s; 
 }
 
 .hero-carousel .owl-stage-outer {
@@ -442,6 +440,7 @@ footer {
     Responsividad
    -------------------- */
 @media (max-width: 767px) {
+    /* La clase .md\:flex se oculta correctamente en móviles por defecto */
     .md\:flex {
         display: none !important;
     }
