@@ -10,14 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
     let auth;
-    let db;
+    let db; 
     let userId;
 
     const loginModal = document.getElementById('login-modal');
     const errorMessage = document.getElementById('error-message');
-    const loginBtn = document.getElementById('login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const panelBtn = document.getElementById('panel-btn');
+    const loginBtnDesktop = document.getElementById('login-btn-desktop');
+    const loginBtnMobile = document.getElementById('login-btn-mobile');
+    const logoutBtnDesktop = document.getElementById('logout-btn-desktop');
+    const logoutBtnMobile = document.getElementById('logout-btn-mobile');
+    const panelBtnDesktop = document.getElementById('panel-btn-desktop');
+    const panelBtnMobile = document.getElementById('panel-btn-mobile');
     const registerBtn = document.getElementById('register-btn');
     const signinBtn = document.getElementById('signin-btn');
     const emailInput = document.getElementById('email');
@@ -82,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nav: false,
                 dots: false,
                 autoplay: true,
-                autoplayTimeout: 5000,
+                autoplayTimeout: 6000,
                 autoplayHoverPause: false,
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
@@ -109,20 +112,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupModal() {
-        if (loginBtn && loginModal) {
-            loginBtn.addEventListener('click', () => {
-                closeSidebarMenu();
-                loginModal.style.display = 'flex';
-            });
-            if (modalCloseBtn) {
-                modalCloseBtn.addEventListener('click', closeLoginModal);
+        const openModalButtons = [loginBtnDesktop, loginBtnMobile];
+        openModalButtons.forEach(btn => {
+            if (btn && loginModal) {
+                btn.addEventListener('click', () => {
+                    closeSidebarMenu();
+                    loginModal.style.display = 'flex';
+                });
             }
-            window.addEventListener('click', (event) => {
-                if (event.target === loginModal) {
-                    closeLoginModal();
-                }
-            });
+        });
+
+        if (modalCloseBtn) {
+            modalCloseBtn.addEventListener('click', closeLoginModal);
         }
+        window.addEventListener('click', (event) => {
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+        });
         document.addEventListener('keydown', (event) => {
             if (event.key === "Escape") {
                 closeLoginModal();
@@ -142,65 +149,82 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupAccordion() {
-        const courseItems = document.querySelectorAll('.course-header');
+        const courseItems = document.querySelectorAll('.course-item');
         if (courseItems.length > 0) {
             courseItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const parent = item.parentElement;
-                    const details = parent.querySelector('.course-details');
-                    const icon = item.querySelector('.toggle-icon');
-                    document.querySelectorAll('.course-item.active').forEach(activeItem => {
-                        if (activeItem !== parent) {
+                const header = item.querySelector('.course-header');
+                const icon = item.querySelector('.toggle-icon');
+
+                if (header) {
+                    header.addEventListener('click', () => {
+                        const isActive = item.classList.contains('active');
+
+                        // Cierra todos los demás
+                        document.querySelectorAll('.course-item.active').forEach(activeItem => {
                             activeItem.classList.remove('active');
-                            activeItem.querySelector('.course-details').style.maxHeight = null;
                             const activeIcon = activeItem.querySelector('.toggle-icon');
                             if (activeIcon) {
                                 activeIcon.classList.remove('fa-minus');
                                 activeIcon.classList.add('fa-plus');
                             }
+                        });
+
+                        // Abre el actual si no estaba activo
+                        if (!isActive) {
+                            item.classList.add('active');
+                            if (icon) {
+                                icon.classList.remove('fa-plus');
+                                icon.classList.add('fa-minus');
+                            }
                         }
                     });
-                    parent.classList.toggle('active');
-                    if (parent.classList.contains('active')) {
-                        details.style.maxHeight = details.scrollHeight + "px";
-                        if (icon) {
-                            icon.classList.remove('fa-plus');
-                            icon.classList.add('fa-minus');
-                        }
-                    } else {
-                        details.style.maxHeight = null;
-                        if (icon) {
-                            icon.classList.remove('fa-minus');
-                            icon.classList.add('fa-plus');
-                        }
-                    }
-                });
+                }
             });
         }
     }
 
-    function setupFaq() {
-        const faqItems = document.querySelectorAll('.faq-item h3');
+function setupFaq() {
+        const faqItems = document.querySelectorAll('.faq-item');
         if (faqItems.length > 0) {
             faqItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const answer = item.nextElementSibling;
-                    const allAnswers = document.querySelectorAll('.faq-answer');
-                    allAnswers.forEach(ans => {
-                        if (ans !== answer) {
-                            ans.style.display = 'none';
+                const header = item.querySelector('h3');
+                
+                if (header) {
+                    header.addEventListener('click', () => {
+                        const icon = item.querySelector('.toggle-icon');
+                        
+                        // 1. Cierra todos los demás ítems (comportamiento de acordeón)
+                        document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+                            if (activeItem !== item) {
+                                activeItem.classList.remove('active');
+                                const otherIcon = activeItem.querySelector('.toggle-icon');
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('fa-minus');
+                                    otherIcon.classList.add('fa-plus');
+                                }
+                            }
+                        });
+
+                        // 2. Alterna la clase 'active' del ítem actual (habilita la minimización)
+                        item.classList.toggle('active');
+
+                        // 3. Actualiza el ícono basándose en el NUEVO estado del ítem
+                        if (icon) {
+                            if (item.classList.contains('active')) {
+                                // Si ahora está ABIERTO, mostrar '-'
+                                icon.classList.remove('fa-plus');
+                                icon.classList.add('fa-minus');
+                            } else {
+                                // Si ahora está CERRADO, mostrar '+'
+                                icon.classList.remove('fa-minus');
+                                icon.classList.add('fa-plus');
+                            }
                         }
                     });
-                    if (answer.style.display === 'block') {
-                        answer.style.display = 'none';
-                    } else {
-                        answer.style.display = 'block';
-                    }
-                });
+                }
             });
         }
     }
-
     function setupContactForm() {
         const contactForm = document.getElementById('contact-form');
         const formMessage = document.getElementById('form-message');
@@ -334,18 +358,28 @@ document.addEventListener('DOMContentLoaded', () => {
             onAuthStateChanged(auth, user => {
                 if (user) {
                     userId = user.uid;
-                    if (loginBtn) loginBtn.style.display = 'none';
-                    if (logoutBtn) logoutBtn.style.display = 'block';
-                    if (panelBtn) panelBtn.style.display = 'block';
+                    // Actualizar botones de escritorio
+                    if (loginBtnDesktop) loginBtnDesktop.style.display = 'none';
+                    if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'block';
+                    if (panelBtnDesktop) panelBtnDesktop.style.display = 'block';
+                    // Actualizar botones móviles
+                    if (loginBtnMobile) loginBtnMobile.style.display = 'none';
+                    if (logoutBtnMobile) logoutBtnMobile.style.display = 'block';
+                    if (panelBtnMobile) panelBtnMobile.style.display = 'block';
                     
                     if (window.location.pathname.endsWith('panel.html')) {
                         setupPanelPage(user);
                     }
                 } else {
                     userId = null;
-                    if (loginBtn) loginBtn.style.display = 'block';
-                    if (logoutBtn) logoutBtn.style.display = 'none';
-                    if (panelBtn) panelBtn.style.display = 'none';
+                    // Actualizar botones de escritorio
+                    if (loginBtnDesktop) loginBtnDesktop.style.display = 'block';
+                    if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'none';
+                    if (panelBtnDesktop) panelBtnDesktop.style.display = 'none';
+                    // Actualizar botones móviles
+                    if (loginBtnMobile) loginBtnMobile.style.display = 'block';
+                    if (logoutBtnMobile) logoutBtnMobile.style.display = 'none';
+                    if (panelBtnMobile) panelBtnMobile.style.display = 'none';
                     
                     if (window.location.pathname.endsWith('panel.html')) {
                         window.location.replace("index.html");
@@ -355,30 +389,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (registerBtn) registerBtn.addEventListener('click', handleRegistration);
             if (signinBtn) signinBtn.addEventListener('click', handleSignIn);
-            if (logoutBtn) logoutBtn.addEventListener('click', () => {
-                signOut(auth).then(() => {
-                    console.log("Sesión cerrada correctamente.");
-                }).catch((error) => {
-                    console.error("Error al cerrar sesión:", error);
-                });
-                closeSidebarMenu();
+
+            const logoutButtons = [logoutBtnDesktop, logoutBtnMobile];
+            logoutButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        signOut(auth).then(() => {
+                            console.log("Sesión cerrada correctamente.");
+                        }).catch((error) => {
+                            console.error("Error al cerrar sesión:", error);
+                        });
+                        closeSidebarMenu();
+                    });
+                }
             });
 
-            if (panelBtn) panelBtn.addEventListener('click', () => {
-                window.location.href = "panel.html";
+            const panelButtons = [panelBtnDesktop, panelBtnMobile];
+            panelButtons.forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        window.location.href = "panel.html";
+                    });
+                }
             });
             
-            setupModal();
-            setupAccordion();
-            setupFaq();
-            setupMenu();
-            setupContactForm();
-            setTimeout(setupCarousel, 100);
 
         } catch (error) {
             console.error("Error en la inicialización de la aplicación:", error);
             showMessageModal("Error", "Error al inicializar la aplicación. Intenta de nuevo.");
         }
     }
+        setupModal();
+            setupAccordion();
+            setupFaq();
+            setupMenu();
+            setupContactForm();
+            setTimeout(setupCarousel, 100);
     initApp();
 });
