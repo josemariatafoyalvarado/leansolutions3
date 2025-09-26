@@ -596,9 +596,7 @@ footer {
     padding: 10px 10px 0 10px;
 }
 }/* Añade esto al final de tu style.css */
-.courses-section.glass-card {
-   /*  padding: 2.5rem; */
-}
+
 
 .faq-section.glass-card {
     padding: 2.5rem;
