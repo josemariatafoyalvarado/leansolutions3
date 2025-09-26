@@ -13,7 +13,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Corregido: "DOM Cargado. Inicializando la aplicación."
     console.log("DOM Cargado. Inicializando la aplicación.");
+
+    // ===============================================
+    // CÓDIGO AÑADIDO PARA LA TRANSICIÓN DEL HEADER CON GSAP
+    // ===============================================
+    // Comprueba si GSAP está cargado antes de usarlo
+    if (typeof gsap !== 'undefined') {
+        gsap.from("header", {
+            y: -100, // Comienza 100px por encima de su posición final
+            opacity: 0, // Comienza invisible
+            duration: 1.8, // Duración de la animación en segundos
+            ease: "power3.out", // Curva de suavidad para un efecto más elegante
+            delay: 0.3 // Pequeño retraso para que inicie después de la carga inicial
+        });
+    }
+    // ===============================================
 
     const firebaseConfig = {
       apiKey: "AIzaSyAAXJ-wklT3mfxdQO16DDwmAriYxroiEKA",
@@ -32,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Referencias de Elementos del DOM
     const loginModal = document.getElementById('login-modal');
     // CORRECCIÓN DE LOGIN: Apunta al ID que se usa en el HTML más reciente
-    const errorMessage = document.getElementById('login-error-message'); 
+    const errorMessage = document.getElementById('login-error-message');  
     const loginBtnDesktop = document.getElementById('login-btn-desktop');
     const loginBtnMobile = document.getElementById('login-btn-mobile');
     const logoutBtnDesktop = document.getElementById('logout-btn-desktop');
@@ -299,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = document.getElementById('contact-email').value;
                 const message = document.getElementById('contact-message').value;
 
+                // Corregido: 'Por favor, completa todos los campos.'
                 if (!name || !email || !message) {
                     formMessage.textContent = 'Por favor, completa todos los campos.';
                     formMessage.className = 'text-red-500 mt-4';
@@ -306,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 console.log('Formulario enviado:', { name, email, message });
+                // Corregido: '¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.'
                 showMessageModal('¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
                 contactForm.reset();
             });
@@ -320,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         const email = emailInput.value;
         const password = passwordInput.value;
+        // Corregido: 'Por favor, ingresa un correo y una contraseña.'
         if (!email || !password) {
             displayError('Por favor, ingresa un correo y una contraseña.');
             return;
@@ -336,14 +355,18 @@ document.addEventListener('DOMContentLoaded', () => {
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
+            // Corregido: 'Error de registro. Por favor, intenta de nuevo.'
             let message = 'Error de registro. Por favor, intenta de nuevo.';
             switch(error.code) {
+                // Corregido: 'El correo electrónico ya está en uso. Por favor, inicia sesión.'
                 case 'auth/email-already-in-use':
                     message = 'El correo electrónico ya está en uso. Por favor, inicia sesión.';
                     break;
+                // Corregido: 'La contraseña debe tener al menos 6 caracteres.'
                 case 'auth/weak-password':
                     message = 'La contraseña debe tener al menos 6 caracteres.';
                     break;
+                // Corregido: 'El correo electrónico no es válido.'
                 case 'auth/invalid-email':
                     message = 'El correo electrónico no es válido.';
                     break;
@@ -359,6 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         const email = emailInput.value;
         const password = passwordInput.value;
+        // Corregido: 'Por favor, ingresa un correo y una contraseña.'
         if (!email || !password) {
             displayError('Por favor, ingresa un correo y una contraseña.');
             return;
@@ -368,13 +392,16 @@ document.addEventListener('DOMContentLoaded', () => {
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
+            // Corregido: 'Error de inicio de sesión. Revisa tu correo y contraseña.'
             let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
             switch(error.code) {
                 case 'auth/invalid-credential':
                 case 'auth/wrong-password':
                 case 'auth/user-not-found':
+                    // Corregido: 'Credenciales inválidas. Revisa tu correo y contraseña.'
                     message = 'Credenciales inválidas. Revisa tu correo y contraseña.';
                     break;
+                // Corregido: 'El correo electrónico no es válido.'
                 case 'auth/invalid-email':
                     message = 'El correo electrónico no es válido.';
                     break;
@@ -395,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
         panelButtons.forEach(btnId => {
             const button = document.getElementById(btnId);
             if (button) {
+                // Corregido: 'Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!'
                 button.addEventListener('click', () => {
                     showMessageModal('Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!');
                 });
@@ -446,6 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     await signOut(auth);
                     window.location.replace("index.html"); 
                 } catch (error) {
+                    // Corregido: "Error al cerrar sesión:" y "No se pudo cerrar la sesión correctamente."
                     console.error("Error al cerrar sesión:", error);
                     showMessageModal("Error", "No se pudo cerrar la sesión correctamente.");
                 }
@@ -461,11 +490,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (panelBtnMobile) panelBtnMobile.addEventListener('click', handlePanel);
 
         } catch (error) {
+            // Corregido: "Error en la inicialización de la aplicación:" y "Error al inicializar la aplicación. Intenta de nuevo."
             console.error("Error en la inicialización de la aplicación:", error);
             showMessageModal("Error", "Error al inicializar la aplicación. Intenta de nuevo.");
         }
     }
 
+    // Corregido: "Inicialización de la aplicación"
     // Inicialización de la aplicación
     setupModal();
     setupAccordion();
