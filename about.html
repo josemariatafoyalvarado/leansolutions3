@@ -23,50 +23,47 @@
 </head>
 <body>
     
+    <!-- Fondo animado con Three.js -->
     <canvas id="webgl-bg"></canvas>
 
-    <div class="floating-logo">
-        <a href="index.html"><img src="logo.svg" alt="Lean Solutions"></a>
-    </div>
-    
-    <button class="menu-toggle-button" id="open-menu-btn">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <aside class="sidebar-menu" id="sidebar-menu">
-        <button class="close-menu-button" id="close-menu-btn">&times;</button>
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="services.html">Servicios</a>
-            <a href="about.html">Acerca</a>
-            <a href="contact.html">Contacto</a>
-            <button id="login-btn">Acceso</button>
-            <button id="panel-btn" style="display:none;">Panel</button>
-            <button id="logout-btn" style="display:none;">Cerrar sesión</button>
+    <!-- Encabezado y Navegación -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
+        <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
+            <div class="floating-logo">
+                <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-white hover:text-gray-300 transition-colors duration-200">Inicio</a>
+                <a href="services.html" class="text-white hover:text-gray-300 transition-colors duration-200">Servicios</a>
+                <a href="about.html" class="text-white hover:text-gray-300 transition-colors duration-200">Acerca</a>
+                <a href="contact.html" class="text-white hover:text-gray-300 transition-colors duration-200">Contacto</a>
+                <button id="login-btn-desktop" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-200">Acceso</button>
+                <button id="panel-btn-desktop" style="display:none;" class="bg-gray-700 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200">Panel</button>
+                <button id="logout-btn-desktop" style="display:none;" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-200">Cerrar sesión</button>
+            </div>
+            <button class="md:hidden text-white text-2xl" id="menu-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Menú lateral para dispositivos móviles -->
+    <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
+        <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
+        <nav class="flex flex-col items-center pt-20">
+            <a href="index.html" class="text-white text-lg py-4 hover:text-gray-300">Inicio</a>
+            <a href="services.html" class="text-white text-lg py-4 hover:text-gray-300">Servicios</a>
+            <a href="about.html" class="text-white text-lg py-4 hover:text-gray-300">Acerca</a>
+            <a href="contact.html" class="text-white text-lg py-4 hover:text-gray-300">Contacto</a>
+            <button id="login-btn-mobile" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Acceso</button>
+            <button id="panel-btn-mobile" style="display:none;" class="mt-4 bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-gray-600">Panel</button>
+            <button id="logout-btn-mobile" style="display:none;" class="mt-4 bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700">Cerrar sesión</button>
         </nav>
     </aside>
 
-    <main class="page-container">
 
-        <section class="hero-section">
-            <div class="hero-carousel owl-carousel owl-theme">
-                <div class="item">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307aa945f3c?q=80&w=2670&auto=format&fit=crop" alt="Equipo de negocios en reunión">
-                </div>
-                <div class="item">
-                    <img src="https://images.unsplash.com/photo-1504384308090-c894fd241d81?q=80&w=2670&auto=format&fit=crop" alt="Innovación tecnológica">
-                </div>
-                <div class="item">
-                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop" alt="Consultoría">
-                </div>
-            </div>
-            <div class="hero-content">
-                <h1 class="font-playfair-display text-5xl md:text-6xl font-bold mb-4 text-white drop-shadow-lg">Lean Solutions</h1>
-                <p class="text-xl font-light max-w-3xl mx-auto mb-12 text-white opacity-80">
-                    Donde la innovación se encuentra con la excelencia.
-                </p>
-            </div>
-        </section>
+    <main class="page-container">
 
         <section class="our-team-section py-16 px-4">
             <h2 class="section-title text-center text-4xl font-playfair-display font-bold text-white mb-12">Nuestro Equipo</h2>
