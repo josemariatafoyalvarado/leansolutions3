@@ -1,6 +1,18 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut 
+    // Se eliminaron: signInWithCustomToken, signInAnonymously (no utilizados)
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { 
+    getFirestore, 
+    doc, 
+    setDoc 
+    // Se eliminaron: collection, addDoc, onSnapshot (no utilizados)
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM Cargado. Inicializando la aplicación.");
@@ -15,13 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
       measurementId: "G-XV8TV6P3Z1"
     };
 
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
+    // Variables no estándar y no utilizadas eliminadas: initialAuthToken, appId
     let auth;
     let db; 
     let userId;
 
+    // Referencias de Elementos del DOM (intactas)
     const loginModal = document.getElementById('login-modal');
     const errorMessage = document.getElementById('error-message');
     const loginBtnDesktop = document.getElementById('login-btn-desktop');
@@ -32,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const panelBtnMobile = document.getElementById('panel-btn-mobile');
     const registerBtn = document.getElementById('register-btn');
     const signinBtn = document.getElementById('signin-btn');
-    // REFERENCIAS CORREGIDAS PARA USAR LOS IDS ÚNICOS DEL MODAL (modal-email, modal-password)
     const emailInput = document.getElementById('modal-email');
     const passwordInput = document.getElementById('modal-password');
     const modalCloseBtn = document.querySelector('#login-modal .close-button');
@@ -44,6 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageTitle = document.getElementById('message-title');
     const messageText = document.getElementById('message-text');
     const messageCloseBtn = document.getElementById('message-close-btn');
+
+    // ===============================================
+    // FUNCIONES DE UTILIDAD DE UI
+    // ===============================================
 
     function closeSidebarMenu() {
         if (sidebarMenu) {
@@ -83,10 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginModal) {
             loginModal.style.display = 'none';
             clearError();
+            // MEJORA: Limpiar los campos al cerrar el modal.
+            if (emailInput) emailInput.value = '';
+            if (passwordInput) passwordInput.value = '';
         }
     }
 
-    // Función para el carrusel del héroe
     function setupHeroCarousel() {
         const carouselElement = document.querySelector('.hero-carousel');
         if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
@@ -105,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función para el carrusel de testimonios
     function setupTestimonialsCarousel() {
         const carouselElement = document.querySelector('.testimonials-carousel');
         if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
@@ -288,6 +303,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // ===============================================
+    // LÓGICA DE FIREBASE Y AUTENTICACIÓN
+    // ===============================================
+
     async function handleRegistration() {
         clearError();
         const email = emailInput.value;
@@ -299,10 +318,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            await setDoc(doc(db, `artifacts/${appId}/users/${user.uid}/userData`, user.uid), {
+            
+            // CORRECCIÓN: Usar la ruta de Firestore estandarizada "users/{uid}"
+            await setDoc(doc(db, "users", user.uid), {
                 email: user.email,
                 createdAt: new Date()
             });
+            
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
@@ -329,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         const email = emailInput.value;
         const password = passwordInput.value;
-        // Esta validación usa los campos correctos (modal-email y modal-password)
         if (!email || !password) {
             displayError('Por favor, ingresa un correo y una contraseña.');
             return;
@@ -341,17 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
             switch(error.code) {
+                // Se agrupan los errores comunes de credenciales inválidas para un mensaje unificado
                 case 'auth/invalid-credential':
+                case 'auth/wrong-password':
+                case 'auth/user-not-found':
                     message = 'Credenciales inválidas. Revisa tu correo y contraseña.';
                     break;
                 case 'auth/invalid-email':
                     message = 'El correo electrónico no es válido.';
-                    break;
-                case 'auth/wrong-password':
-                    message = 'Contraseña incorrecta.';
-                    break;
-                case 'auth/user-not-found':
-                    message = 'El usuario no existe.';
                     break;
                 default:
                     message = 'Error desconocido: ' + error.message;
@@ -389,48 +407,36 @@ document.addEventListener('DOMContentLoaded', () => {
             auth = getAuth(app);
             db = getFirestore(app);
             
-            // Dejamos que onAuthStateChanged maneje si el usuario está o no autenticado.
-
             onAuthStateChanged(auth, user => {
-                if (user) {
-                    userId = user.uid;
-                    // Actualizar botones de escritorio
-                    if (loginBtnDesktop) loginBtnDesktop.style.display = 'none';
-                    if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'block';
-                    if (panelBtnDesktop) panelBtnDesktop.style.display = 'block';
-                    // Actualizar botones móviles
-                    if (loginBtnMobile) loginBtnMobile.style.display = 'none';
-                    if (logoutBtnMobile) logoutBtnMobile.style.display = 'block';
-                    if (panelBtnMobile) panelBtnMobile.style.display = 'block';
-                    
-                    if (window.location.pathname.endsWith('panel.html')) {
-                        setupPanelPage(user);
-                    }
-                } else {
-                    userId = null;
-                    // Actualizar botones de escritorio
-                    if (loginBtnDesktop) loginBtnDesktop.style.display = 'block';
-                    if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'none';
-                    if (panelBtnDesktop) panelBtnDesktop.style.display = 'none';
-                    // Actualizar botones móviles
-                    if (loginBtnMobile) loginBtnMobile.style.display = 'block';
-                    if (logoutBtnMobile) logoutBtnMobile.style.display = 'none';
-                    if (panelBtnMobile) panelBtnMobile.style.display = 'none';
-                    
-                    if (window.location.pathname.endsWith('panel.html')) {
-                        window.location.replace("index.html");
-                    }
+                const isLoggedIn = !!user; // Uso de booleano para lógica más limpia
+                userId = isLoggedIn ? user.uid : null;
+
+                // Actualizar botones de escritorio
+                if (loginBtnDesktop) loginBtnDesktop.style.display = isLoggedIn ? 'none' : 'block';
+                if (logoutBtnDesktop) logoutBtnDesktop.style.display = isLoggedIn ? 'block' : 'none';
+                if (panelBtnDesktop) panelBtnDesktop.style.display = isLoggedIn ? 'block' : 'none';
+                
+                // Actualizar botones móviles
+                if (loginBtnMobile) loginBtnMobile.style.display = isLoggedIn ? 'none' : 'block';
+                if (logoutBtnMobile) logoutBtnMobile.style.display = isLoggedIn ? 'block' : 'none';
+                if (panelBtnMobile) panelBtnMobile.style.display = isLoggedIn ? 'block' : 'none';
+
+                const currentPath = window.location.pathname;
+
+                if (isLoggedIn && currentPath.endsWith('panel.html')) {
+                    setupPanelPage(user);
+                } else if (!isLoggedIn && (currentPath.endsWith('panel.html') || currentPath.endsWith('mis-cursos.html'))) {
+                    // Redirigir si no está logueado e intenta acceder a rutas privadas
+                    window.location.replace("index.html");
                 }
             });
 
             if (registerBtn) registerBtn.addEventListener('click', handleRegistration);
             if (signinBtn) signinBtn.addEventListener('click', handleSignIn);
             
-            // Lógica para cerrar sesión
             const handleLogout = async () => {
                 try {
                     await signOut(auth);
-                    // Redirigir a la página de inicio o donde sea apropiado
                     window.location.replace("index.html"); 
                 } catch (error) {
                     console.error("Error al cerrar sesión:", error);
@@ -438,11 +444,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            // Asignar evento de cerrar sesión a los botones de logout
             if (logoutBtnDesktop) logoutBtnDesktop.addEventListener('click', handleLogout);
             if (logoutBtnMobile) logoutBtnMobile.addEventListener('click', handleLogout);
 
-            // Asignar evento a los botones de panel
             const handlePanel = () => {
                 window.location.href = 'panel.html';
             };
@@ -454,6 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessageModal("Error", "Error al inicializar la aplicación. Intenta de nuevo.");
         }
     }
+
+    // Inicialización de la aplicación
     setupModal();
     setupAccordion();
     setupFaq();

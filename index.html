@@ -22,10 +22,8 @@
 </head>
 <body>
     
-    <!-- Fondo animado con Three.js -->
     <canvas id="webgl-bg"></canvas>
 
-    <!-- Encabezado y Navegación -->
     <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
         <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
             <div class="floating-logo">
@@ -46,7 +44,6 @@
         </nav>
     </header>
 
-    <!-- Menú lateral para dispositivos móviles -->
     <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
         <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
         <nav class="flex flex-col items-center pt-20">
@@ -62,7 +59,6 @@
 
     <main>
         
-        <!-- Sección de Héroe -->
         <section class="hero-section hero relative w-full flex flex-col justify-center items-center text-white">
             <div class="hero-carousel owl-carousel owl-theme absolute inset-0">
                 <div class="item">
@@ -82,7 +78,6 @@
             </div>
         </section>
 
-        <!-- Sección de Soluciones Destacadas (Acordeón) -->
         <section class="courses-section">
             <h2 class="section-title">Soluciones Destacadas</h2>
             <div class="course-accordion">
@@ -149,7 +144,6 @@
         </section>
 
 
-        <!-- Sección de Preguntas Frecuentes (FAQ) -->
         <section class="faq-section">
             <h2 class="section-title">Preguntas Frecuentes</h2>
             <div class="max-w-3xl mx-auto space-y-4">
@@ -178,26 +172,24 @@
         </section>
     </main>
     
-    <!-- Pie de página -->
     <footer>
         <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
     </footer>
     
-    <!-- Modal de Acceso -->
     <div id="login-modal" class="modal">
       <div class="modal-content">
         <span class="close-button" id="modal-close-btn">&times;</span>
         <h2>Acceso a Lean Solutions</h2>
         <form id="auth-form" class="space-y-4">
           <div>
-            <label for="email" class="block text-sm font-medium">Correo Electrónico</label>
-            <input type="email" id="email" name="email" required>
+            <label for="modal-email" class="block text-sm font-medium">Correo Electrónico</label>
+            <input type="email" id="modal-email" name="modal-email" required>
           </div>
           <div>
-            <label for="password" class="block text-sm font-medium">Contraseña</label>
-            <input type="password" id="password" name="password" required>
+            <label for="modal-password" class="block text-sm font-medium">Contraseña</label>
+            <input type="password" id="modal-password" name="modal-password" required>
           </div>
-          <div id="error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
+          <div id="login-error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
           <div class="flex justify-between items-center space-x-4">
             <button type="button" id="register-btn">Registrarse</button>
             <button type="button" id="signin-btn">Iniciar Sesión</button>
@@ -206,7 +198,15 @@
       </div>
     </div>
 
-    <!-- Scripts externos -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="message-close-btn">&times;</span>
+            <h2 id="message-title"></h2>
+            <p id="message-text" class="text-gray-300"></p>
+        </div>
+    </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="webgl-script.js"></script>
