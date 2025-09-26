@@ -22,15 +22,15 @@
 </head>
 <body>
     
+    <!-- Fondo animado con Three.js -->
     <canvas id="webgl-bg"></canvas>
 
+    <!-- Encabezado y Navegación -->
     <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
         <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
             <div class="floating-logo">
-        <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
-    </div>
-                
-            </a>
+                <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
+            </div>
             <div class="hidden md:flex items-center space-x-6">
                 <a href="index.html" class="text-white hover:text-gray-300 transition-colors duration-200">Inicio</a>
                 <a href="services.html" class="text-white hover:text-gray-300 transition-colors duration-200">Servicios</a>
@@ -46,6 +46,7 @@
         </nav>
     </header>
 
+    <!-- Menú lateral para dispositivos móviles -->
     <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
         <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
         <nav class="flex flex-col items-center pt-20">
@@ -61,6 +62,7 @@
 
     <main>
         
+        <!-- Sección de Héroe -->
         <section class="hero-section hero relative w-full flex flex-col justify-center items-center text-white">
             <div class="hero-carousel owl-carousel owl-theme absolute inset-0">
                 <div class="item">
@@ -79,103 +81,109 @@
                 <button class="cta-button mt-8">Explora Nuestros Servicios</button>
             </div>
         </section>
-      <section class="courses-section">
-    <h2 class="section-title">Soluciones Destacadas</h2>
-    <div class="course-accordion">
-        <div class="course-item">
-            <div class="course-header">
-                <h3><i class="fas fa-graduation-cap mr-3"></i> Capacitación</h3>
-                <span class="toggle-icon fas fa-plus"></span>
-            </div>
-            <div class="course-details">
-                <p>Programas diseñados para desarrollar las competencias clave en metodologías de mejora continua.</p>
-                <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
-                    <li><strong>Lean Six Sigma:</strong> formación en herramientas para la reducción de variabilidad y optimización de procesos.</li>
-                    <li><strong>Liderazgo Lean:</strong> desarrollo de líderes capaces de guiar equipos hacia la excelencia operativa.</li>
-                    <li><strong>Principios Kaizen:</strong> cultura de mejora diaria enfocada en pequeños cambios con gran impacto.</li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="course-item">
-            <div class="course-header">
-                <h3><i class="fas fa-handshake mr-3"></i> Consultoría</h3>
-                <span class="toggle-icon fas fa-plus"></span>
-            </div>
-            <div class="course-details">
-                <p>Acompañamiento estratégico y técnico para transformar procesos y generar valor sostenible.</p>
-                <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
-                    <li><strong>Implementación de Lean Manufacturing:</strong> optimización de la producción para eliminar desperdicios.</li>
-                    <li><strong>Mejora de Procesos:</strong> diagnóstico, rediseño y estandarización de flujos de trabajo.</li>
-                    <li><strong>Reducción de Costos:</strong> análisis y aplicación de metodologías que maximizan eficiencia y rentabilidad.</li>
-                </ul>
-            </div>
-        </div>
+        <!-- Sección de Soluciones Destacadas (Acordeón) -->
+        <section class="courses-section">
+            <h2 class="section-title">Soluciones Destacadas</h2>
+            <div class="course-accordion">
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-graduation-cap mr-3"></i> Capacitación</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Programas diseñados para desarrollar las competencias clave en metodologías de mejora continua.</p>
+                        <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
+                            <li><strong>Lean Six Sigma:</strong> formación en herramientas para la reducción de variabilidad y optimización de procesos.</li>
+                            <li><strong>Liderazgo Lean:</strong> desarrollo de líderes capaces de guiar equipos hacia la excelencia operativa.</li>
+                            <li><strong>Principios Kaizen:</strong> cultura de mejora diaria enfocada en pequeños cambios con gran impacto.</li>
+                        </ul>
+                    </div>
+                </div>
 
-        <div class="course-item">
-            <div class="course-header">
-                <h3><i class="fas fa-project-diagram mr-3"></i> Proyectos de Mejora</h3>
-                <span class="toggle-icon fas fa-plus"></span>
-            </div>
-            <div class="course-details">
-                <p>Intervenciones específicas con resultados medibles en corto y mediano plazo.</p>
-                <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
-                    <li><strong>Six Sigma:</strong> aplicación de la metodología DMAIC para garantizar calidad y consistencia.</li>
-                    <li><strong>Kaizen Blitz:</strong> eventos intensivos de mejora en áreas clave de la organización.</li>
-                    <li><strong>Value Stream Mapping:</strong> mapeo de la cadena de valor para identificar oportunidades de optimización.</li>
-                </ul>
-            </div>
-        </div>
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-handshake mr-3"></i> Consultoría</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Acompañamiento estratégico y técnico para transformar procesos y generar valor sostenible.</p>
+                        <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
+                            <li><strong>Implementación de Lean Manufacturing:</strong> optimización de la producción para eliminar desperdicios.</li>
+                            <li><strong>Mejora de Procesos:</strong> diagnóstico, rediseño y estandarización de flujos de trabajo.</li>
+                            <li><strong>Reducción de Costos:</strong> análisis y aplicación de metodologías que maximizan eficiencia y rentabilidad.</li>
+                        </ul>
+                    </div>
+                </div>
 
-        <div class="course-item">
-            <div class="course-header">
-                <h3><i class="fas fa-users mr-3"></i> Acompañamiento y Coaching</h3>
-                <span class="toggle-icon fas fa-plus"></span>
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-project-diagram mr-3"></i> Proyectos de Mejora</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Intervenciones específicas con resultados medibles en corto y mediano plazo.</p>
+                        <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
+                            <li><strong>Six Sigma:</strong> aplicación de la metodología DMAIC para garantizar calidad y consistencia.</li>
+                            <li><strong>Kaizen Blitz:</strong> eventos intensivos de mejora en áreas clave de la organización.</li>
+                            <li><strong>Value Stream Mapping:</strong> mapeo de la cadena de valor para identificar oportunidades de optimización.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="course-item">
+                    <div class="course-header">
+                        <h3><i class="fas fa-users mr-3"></i> Acompañamiento y Coaching</h3>
+                        <span class="toggle-icon fas fa-plus"></span>
+                    </div>
+                    <div class="course-details">
+                        <p>Desarrollo de talento humano y fortalecimiento de la cultura organizacional.</p>
+                        <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
+                            <li><strong>Coaching a Líderes:</strong> impulso de habilidades de gestión y toma de decisiones.</li>
+                            <li><strong>Trabajo con Equipos:</strong> fomento de la colaboración y la innovación en los grupos de trabajo.</li>
+                            <li><strong>Cultura Lean:</strong> consolidación de un entorno organizacional enfocado en la mejora continua y el crecimiento sostenible.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="course-details">
-                <p>Desarrollo de talento humano y fortalecimiento de la cultura organizacional.</p>
-                <ul class="list-disc ml-6 mt-4 space-y-1 text-sm">
-                    <li><strong>Coaching a Líderes:</strong> impulso de habilidades de gestión y toma de decisiones.</li>
-                    <li><strong>Trabajo con Equipos:</strong> fomento de la colaboración y la innovación en los grupos de trabajo.</li>
-                    <li><strong>Cultura Lean:</strong> consolidación de un entorno organizacional enfocado en la mejora continua y el crecimiento sostenible.</li>
-                </ul>
+        </section>
+
+
+        <!-- Sección de Preguntas Frecuentes (FAQ) -->
+        <section class="faq-section">
+            <h2 class="section-title">Preguntas Frecuentes</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="faq-item">
+                    <h3 class="flex justify-between items-center w-full">
+                        <span>¿Qué es Lean Solutions?</span>
+                        <i class="fas fa-plus toggle-icon"></i>
+                    </h3>
+                    <div class="faq-answer">Somos una consultora especializada en formación y capacitación en metodologías de mejora continua.</div>
+                </div>
+                <div class="faq-item">
+                    <h3 class="flex justify-between items-center w-full">
+                        <span>¿Cómo me inscribo en un curso?</span>
+                        <i class="fas fa-plus toggle-icon"></i>
+                    </h3>
+                    <div class="faq-answer">Puedes inscribirte a través de nuestra plataforma en línea. Solo necesitas crear una cuenta y seleccionar el curso de tu interés.</div>
+                </div>
+                <div class="faq-item">
+                    <h3 class="flex justify-between items-center w-full">
+                        <span>¿Los cursos son presenciales o en línea?</span>
+                        <i class="fas fa-plus toggle-icon"></i>
+                    </h3>
+                    <div class="faq-answer">Ofrecemos cursos en ambos formatos: presenciales en nuestras oficinas y en línea para que puedas aprender a tu propio ritmo.</div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-
-
-<section class="faq-section">
-    <h2 class="section-title">Preguntas Frecuentes</h2>
-    <div class="max-w-3xl mx-auto space-y-4">
-        <div class="faq-item">
-            <h3 class="flex justify-between items-center w-full">
-                <span>¿Qué es Lean Solutions?</span>
-                <i class="fas fa-plus toggle-icon"></i>
-            </h3>
-            <div class="faq-answer">Somos una consultora especializada en formación y capacitación en metodologías de mejora continua.</div>
-        </div>
-        <div class="faq-item">
-            <h3 class="flex justify-between items-center w-full">
-                <span>¿Cómo me inscribo en un curso?</span>
-                <i class="fas fa-plus toggle-icon"></i>
-            </h3>
-            <div class="faq-answer">Puedes inscribirte a través de nuestra plataforma en línea. Solo necesitas crear una cuenta y seleccionar el curso de tu interés.</div>
-        </div>
-        <div class="faq-item">
-            <h3 class="flex justify-between items-center w-full">
-                <span>¿Los cursos son presenciales o en línea?</span>
-                <i class="fas fa-plus toggle-icon"></i>
-            </h3>
-            <div class="faq-answer">Ofrecemos cursos en ambos formatos: presenciales en nuestras oficinas y en línea para que puedas aprender a tu propio ritmo.</div>
-        </div>
-
+        </section>
     </main>
     
+    <!-- Pie de página -->
     <footer>
         <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
     </footer>
     
+    <!-- Modal de Acceso -->
     <div id="login-modal" class="modal">
       <div class="modal-content">
         <span class="close-button" id="modal-close-btn">&times;</span>
@@ -198,6 +206,7 @@
       </div>
     </div>
 
+    <!-- Scripts externos -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="webgl-script.js"></script>

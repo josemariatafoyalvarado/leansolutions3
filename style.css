@@ -39,7 +39,9 @@ body {
     z-index: -1;
 }
 
-/* -------------------- Encabezado y Navegación -------------------- */
+/* --------------------
+    Encabezado y Navegación
+   -------------------- */
 header {
     position: fixed;
     top: 0;
@@ -59,30 +61,26 @@ nav {
 }
 
 .logo img {
-    height: 20px; /* Tamaño del logo ajustado para un mejor ajuste */
+    height: 20px;
     width: auto;
 }
 
-/* Estilos de botones y enlaces de navegación */
-.md\\:flex a,
-.md\\:flex button {
+/* Estilos de Botones y Enlaces de Navegación */
+.md\:flex a,
+.md\:flex button {
     text-decoration: none;
     font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-.md\\:flex button {
+.md\:flex button {
     cursor: pointer;
     border: none;
     background: none;
 }
 
-.md\\:flex button,
-.md\\:flex a {
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.md\\:flex a::after {
+.md\:flex a::after {
     content: '';
     position: absolute;
     width: 0;
@@ -93,19 +91,21 @@ nav {
     transition: width 0.3s ease-in-out;
 }
 
-.md\\:flex a:hover::after {
+.md\:flex a:hover::after {
     width: 100%;
 }
 
-.md\\:flex button:hover {
+.md\:flex button:hover {
     transform: translateY(-2px);
 }
 
-/* -------------------- Estilos del Menú Lateral Móvil -------------------- */
+/* --------------------
+    Menú Móvil
+   -------------------- */
 .sidebar-menu {
     position: fixed;
     top: 0;
-    right: -100%; /* Oculto por defecto */
+    right: -100%;
     width: 250px;
     height: 100%;
     background: rgba(18, 22, 38, 0.95);
@@ -149,13 +149,34 @@ nav {
     transform: rotateY(10deg);
 }
 
-/* -------------------- Secciones de Contenido -------------------- */
+/* --------------------
+    Estilos Generales de Secciones
+   -------------------- */
 section {
     padding: 80px 0;
     position: relative;
     z-index: 1;
 }
 
+.section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    transition: transform 0.3s;
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--border-color);
+    margin: 20px;
+}
+
+/* --------------------
+    Sección Hero
+   -------------------- */
 .hero {
     height: 100vh;
     display: flex;
@@ -206,9 +227,9 @@ section {
     background-color: var(--secondary-accent);
 }
 
-/* -------------------- HERO CAROUSEL: SOLUCIÓN DEFINITIVA (LIMPIO Y ESTANDARIZADO) -------------------- */
-
-/* 1. Limpieza de Contenedor Principal (Ya Correcto) */
+/* --------------------
+    Hero Carousel (Limpio y Estándar)
+   -------------------- */
 .hero-carousel {
     position: relative;
     z-index: 1; 
@@ -216,42 +237,30 @@ section {
     border-radius: 0 !important;
     padding: 0 !important;
     box-shadow: none !important; 
+    height: 800px !important;
 }
 
-/* 2. Forzar la altura del contenedor en toda la cadena (800px) */
-.hero-carousel,
 .hero-carousel .owl-stage-outer,
 .hero-carousel .owl-stage,
 .hero-carousel .owl-item {
-    height: 800px !important; 
+    height: 100% !important; 
     overflow: hidden !important; 
 }
 
-/* 3. Estilos de Imagen: Eliminación de Hacks y Centrado Estándar */
 .hero-carousel .owl-item img {
     display: block !important;
     width: 100% !important;
-    
-    /* Restauración: Altura de la imagen al 100% del contenedor */
     height: 100% !important; 
     min-height: initial !important; 
-    
-    /* Eliminación del Hack de Transformación: ESENCIAL para las imágenes pequeñas */
     transform: none !important; 
-    
-    /* Mantenemos object-fit para que las imágenes escalen si son más pequeñas */
     object-fit: cover !important; 
-    
-    /* Centrado de compromiso, que funcionará con imágenes de proporción estandarizada */
     object-position: center center !important; 
 }
 
-/* 4. Mantenemos el suavizado de animación (1.5s) */
 .hero-carousel .animated {
     animation-duration: 1.5s; 
 }
 
-/* 5. Mantenemos el difuminado de bordes (Ya Correcto) */
 .hero-carousel .owl-stage-outer {
     mask-image: linear-gradient(
         to bottom, 
@@ -269,147 +278,80 @@ section {
     );
     overflow: hidden !important; 
 }
-/* -------------------- Características y Cursos -------------------- */
-.glass-card {
-    background: var(--card-bg);
-    border-radius: 12px;
-    transition: transform 0.3s;
-    backdrop-filter: blur(5px);
-    border: 1px solid var(--border-color);
-    margin: 20px;
-}
 
-.section-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.course-accordion {
+/* --------------------
+    Cursos y FAQ (Acordeones)
+   -------------------- */
+.course-accordion,
+.faq-section {
     max-width: 800px;
     margin: 0 auto;
 }
 
-.course-item {
+.course-item,
+.faq-item {
     background: var(--card-bg);
     border-radius: 12px;
     margin-bottom: 1rem;
     border: 1px solid var(--border-color);
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.2s ease-in-out;
 }
 
-.course-item:hover {
+.course-item:hover,
+.faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     background-color: var(--hover-bg);
 }
 
-.course-header {
+.course-header,
+.faq-item h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 1.5rem; /* Aumenta el padding para que el "botón" sea más grande */
-    border-radius: 10px; /* Le da bordes redondeados */
-    background: var(--hover-bg); /* Un color de fondo para que se vea como un botón */
-    transition: all 0.3s ease; /* Transición suave para el hover */
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    background: var(--hover-bg);
+    transition: all 0.3s ease;
 }
 
-.course-header:hover {
-    background-color: #2b354e; /* Un tono más oscuro al pasar el cursor */
-    transform: translateY(-2px); /* Un pequeño efecto de levantamiento */
-}
-/* Acordeón para cursos (fuera de @media) */
-.course-details {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-    padding: 0 30px;
-}
-
-.course-item.active .course-details {
-    max-height: 500px;
-    padding: 20px 30px;
+.course-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .toggle-icon {
     transition: transform 0.3s ease;
 }
 
-.course-item.active .toggle-icon {
-    transform: rotate(180deg);
-}
-
-.toggle-icon {
-    transition: transform 0.3s ease-in-out;
-}
-
-.course-item.active .toggle-icon {
-    transform: rotate(180deg);
-}
-
-/* ... (Código CSS anterior) ... */
-
-/* -------------------- FAQ y Contacto -------------------- */
-.faq-section {
-    padding-top: 50px;
-}
-
-/* 1. Estilos del contenedor principal (similares a .course-item) */
-.faq-item {
-    background: none; /* Se quita el fondo para que el h3 lo aplique */
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0; /* Se quita el padding del contenedor, lo aplica el h3 */
-}
-
-/* 2. Efecto de hover y levantamiento (similar a .course-header:hover) */
-.faq-item:hover {
-    background-color: var(--hover-bg); 
-    transform: translateY(-2px); 
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* 3. Estilos del encabezado (h3) para que parezca un botón */
-.faq-item h3 {
-    display: flex; /* Asegura que la alineación del icono funcione */
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    margin: 0;
-    padding: 1.25rem 1.5rem; /* Mismo padding que .course-header */
-    border-radius: 10px;
-    background: var(--hover-bg); /* Mismo background que .course-header */
-    transition: all 0.3s ease;
-}
-
-.faq-item:hover h3 {
-    background-color: #2b354e; /* Tono más oscuro al pasar el cursor */
-    transform: none; /* Evitamos doble transform */
-}
-
-/* 4. Estilos de la respuesta (similar a .course-details) */
-.faq-answer {
-    max-height: 0; 
-    overflow: hidden;
-    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-    padding: 0 30px; /* Padding para el contenido */
-    color: var(--sub-text-color);
-}
-.faq-item.active .faq-answer {
-    max-height: 500px; /* Suficiente altura */
-    padding: 20px 30px; /* Mismo padding que .course-details activo */
-}
-/* La rotación del ícono está cubierta por: */
+.course-item.active .toggle-icon,
 .faq-item.active .toggle-icon {
     transform: rotate(180deg);
 }
 
+.course-details,
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+    padding: 0 30px;
+}
 
-/* ... (El resto del código CSS, incluyendo el media query, se deja intacto) ... */
-/* -------------------- Footer -------------------- */
+.course-item.active .course-details,
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 20px 30px;
+}
+
+.faq-answer p {
+    color: var(--sub-text-color);
+}
+
+/* --------------------
+    Footer
+   -------------------- */
 footer {
     text-align: center;
     padding: 30px;
@@ -422,7 +364,9 @@ footer {
     font-size: 0.9rem;
 }
 
-/* -------------------- Modales -------------------- */
+/* --------------------
+    Modales
+   -------------------- */
 .modal {
     display: none;
     position: fixed;
@@ -494,109 +438,18 @@ footer {
     background-color: var(--secondary-accent);
 }
 
-/* -------------------- Responsividad -------------------- */
+/* --------------------
+    Responsividad
+   -------------------- */
 @media (max-width: 767px) {
-    .md\\:flex {
+    .md\:flex {
         display: none !important;
     }
+
     .logo img {
-      height: 40px; /* Tamaño del logo en pantallas móviles ajustado */
+      height: 40px;
     }
-/* Estilos para el Acordeón */
-.course-accordion {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
 }
-
-.course-item {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 1px solid var(--border-color);
-}
-
-.course-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.course-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-color);
-    user-select: none;
-}
-
-.course-header h3 {
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.toggle-icon {
-    transition: transform 0.3s ease;
-}
-
-.course-details p {
-    margin: 0 0 15px 0;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--sub-text-color);
-}
-
-/* Estado activo */
-.course-item.active .course-details {
-    max-height: 500px; /* Suficientemente grande para el contenido */
-    padding: 20px 30px;
-}
-
-.course-item.active .toggle-icon {
-    transform: rotate(180deg);
-}
-
-/* Estilos para la sección de FAQ (similar al acordeón) */
-.faq-section {
-    max-width: 800px;
-    margin: 40px auto;
-}
-
-.faq-item {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    margin-bottom: 15px;
-    padding: 20px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-    border: 1px solid var(--border-color);
-}
-
-.faq-item h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--text-color);
-}
-
-.faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
-    padding: 0 10px;
-    color: var(--sub-text-color);
-}
-
-.faq-item.active .faq-answer {
-    max-height: 200px;
-    padding: 10px 10px 0 10px;
-}
-}/* Añade esto al final de tu style.css */
-
 
 .faq-section.glass-card {
     padding: 2.5rem;

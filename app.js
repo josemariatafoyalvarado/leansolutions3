@@ -3,7 +3,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { getFirestore, doc, setDoc, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM Cargado. Inicializando la aplicación.");
+    console.log("DOM Cargado. Inicializando la aplicaciÃ³n.");
 
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
     const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -76,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function setupCarousel() {
+    // FunciÃ³n para el carrusel del hÃ©roe
+    function setupHeroCarousel() {
         const carouselElement = document.querySelector('.hero-carousel');
         if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
             $('.hero-carousel').owlCarousel({
@@ -90,6 +91,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
                 items: 1
+            });
+        }
+    }
+
+    // FunciÃ³n para el carrusel de testimonios
+    function setupTestimonialsCarousel() {
+        const carouselElement = document.querySelector('.testimonials-carousel');
+        if (typeof jQuery !== 'undefined' && jQuery.fn.owlCarousel && carouselElement) {
+            $('.testimonials-carousel').owlCarousel({
+                loop: true,
+                margin: 20,
+                nav: false,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    768: {
+                        items: 2
+                    },
+                    1024: {
+                        items: 3
+                    }
+                }
             });
         }
     }
@@ -159,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     header.addEventListener('click', () => {
                         const isActive = item.classList.contains('active');
 
-                        // Cierra todos los demás
+                        // Cierra todos los demÃ¡s
                         document.querySelectorAll('.course-item.active').forEach(activeItem => {
                             activeItem.classList.remove('active');
                             const activeIcon = activeItem.querySelector('.toggle-icon');
@@ -183,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-function setupFaq() {
+    function setupFaq() {
         const faqItems = document.querySelectorAll('.faq-item');
         if (faqItems.length > 0) {
             faqItems.forEach(item => {
@@ -193,7 +221,7 @@ function setupFaq() {
                     header.addEventListener('click', () => {
                         const icon = item.querySelector('.toggle-icon');
                         
-                        // 1. Cierra todos los demás ítems (comportamiento de acordeón)
+                        // 1. Cierra todos los demÃ¡s Ã­tems (comportamiento de acordeÃ³n)
                         document.querySelectorAll('.faq-item.active').forEach(activeItem => {
                             if (activeItem !== item) {
                                 activeItem.classList.remove('active');
@@ -205,17 +233,17 @@ function setupFaq() {
                             }
                         });
 
-                        // 2. Alterna la clase 'active' del ítem actual (habilita la minimización)
+                        // 2. Alterna la clase 'active' del Ã­tem actual (habilita la minimizaciÃ³n)
                         item.classList.toggle('active');
 
-                        // 3. Actualiza el ícono basándose en el NUEVO estado del ítem
+                        // 3. Actualiza el Ã­cono basÃ¡ndose en el NUEVO estado del Ã­tem
                         if (icon) {
                             if (item.classList.contains('active')) {
-                                // Si ahora está ABIERTO, mostrar '-'
+                                // Si ahora estÃ¡ ABIERTO, mostrar '-'
                                 icon.classList.remove('fa-plus');
                                 icon.classList.add('fa-minus');
                             } else {
-                                // Si ahora está CERRADO, mostrar '+'
+                                // Si ahora estÃ¡ CERRADO, mostrar '+'
                                 icon.classList.remove('fa-minus');
                                 icon.classList.add('fa-plus');
                             }
@@ -225,6 +253,7 @@ function setupFaq() {
             });
         }
     }
+
     function setupContactForm() {
         const contactForm = document.getElementById('contact-form');
         const formMessage = document.getElementById('form-message');
@@ -243,7 +272,7 @@ function setupFaq() {
                 }
 
                 console.log('Formulario enviado:', { name, email, message });
-                showMessageModal('¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
+                showMessageModal('Â¡Mensaje Enviado!', 'Â¡Mensaje enviado con Ã©xito! Nos pondremos en contacto contigo pronto.');
                 contactForm.reset();
             });
         }
@@ -254,7 +283,7 @@ function setupFaq() {
         const email = emailInput.value;
         const password = passwordInput.value;
         if (!email || !password) {
-            displayError('Por favor, ingresa un correo y una contraseña.');
+            displayError('Por favor, ingresa un correo y una contraseÃ±a.');
             return;
         }
         try {
@@ -270,13 +299,13 @@ function setupFaq() {
             let message = 'Error de registro. Por favor, intenta de nuevo.';
             switch(error.code) {
                 case 'auth/email-already-in-use':
-                    message = 'El correo electrónico ya está en uso. Por favor, inicia sesión.';
+                    message = 'El correo electrÃ³nico ya estÃ¡ en uso. Por favor, inicia sesiÃ³n.';
                     break;
                 case 'auth/weak-password':
-                    message = 'La contraseña debe tener al menos 6 caracteres.';
+                    message = 'La contraseÃ±a debe tener al menos 6 caracteres.';
                     break;
                 case 'auth/invalid-email':
-                    message = 'El correo electrónico no es válido.';
+                    message = 'El correo electrÃ³nico no es vÃ¡lido.';
                     break;
                 default:
                     message = 'Error desconocido: ' + error.message;
@@ -291,7 +320,7 @@ function setupFaq() {
         const email = emailInput.value;
         const password = passwordInput.value;
         if (!email || !password) {
-            displayError('Por favor, ingresa un correo y una contraseña.');
+            displayError('Por favor, ingresa un correo y una contraseÃ±a.');
             return;
         }
         try {
@@ -299,16 +328,16 @@ function setupFaq() {
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
-            let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
+            let message = 'Error de inicio de sesiÃ³n. Revisa tu correo y contraseÃ±a.';
             switch(error.code) {
                 case 'auth/invalid-credential':
-                    message = 'Credenciales inválidas. Revisa tu correo y contraseña.';
+                    message = 'Credenciales invÃ¡lidas. Revisa tu correo y contraseÃ±a.';
                     break;
                 case 'auth/invalid-email':
-                    message = 'El correo electrónico no es válido.';
+                    message = 'El correo electrÃ³nico no es vÃ¡lido.';
                     break;
                 case 'auth/wrong-password':
-                    message = 'Contraseña incorrecta.';
+                    message = 'ContraseÃ±a incorrecta.';
                     break;
                 case 'auth/user-not-found':
                     message = 'El usuario no existe.';
@@ -331,7 +360,7 @@ function setupFaq() {
             const button = document.getElementById(btnId);
             if (button) {
                 button.addEventListener('click', () => {
-                    showMessageModal('Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!');
+                    showMessageModal('Funcionalidad en Desarrollo', 'Esta secciÃ³n estarÃ¡ disponible en una futura actualizaciÃ³n. Â¡Gracias por tu paciencia!');
                 });
             }
         });
@@ -362,7 +391,7 @@ function setupFaq() {
                     if (loginBtnDesktop) loginBtnDesktop.style.display = 'none';
                     if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'block';
                     if (panelBtnDesktop) panelBtnDesktop.style.display = 'block';
-                    // Actualizar botones móviles
+                    // Actualizar botones mÃ³viles
                     if (loginBtnMobile) loginBtnMobile.style.display = 'none';
                     if (logoutBtnMobile) logoutBtnMobile.style.display = 'block';
                     if (panelBtnMobile) panelBtnMobile.style.display = 'block';
@@ -376,7 +405,7 @@ function setupFaq() {
                     if (loginBtnDesktop) loginBtnDesktop.style.display = 'block';
                     if (logoutBtnDesktop) logoutBtnDesktop.style.display = 'none';
                     if (panelBtnDesktop) panelBtnDesktop.style.display = 'none';
-                    // Actualizar botones móviles
+                    // Actualizar botones mÃ³viles
                     if (loginBtnMobile) loginBtnMobile.style.display = 'block';
                     if (logoutBtnMobile) logoutBtnMobile.style.display = 'none';
                     if (panelBtnMobile) panelBtnMobile.style.display = 'none';
@@ -395,9 +424,9 @@ function setupFaq() {
                 if (btn) {
                     btn.addEventListener('click', () => {
                         signOut(auth).then(() => {
-                            console.log("Sesión cerrada correctamente.");
+                            console.log("SesiÃ³n cerrada correctamente.");
                         }).catch((error) => {
-                            console.error("Error al cerrar sesión:", error);
+                            console.error("Error al cerrar sesiÃ³n:", error);
                         });
                         closeSidebarMenu();
                     });
@@ -415,15 +444,16 @@ function setupFaq() {
             
 
         } catch (error) {
-            console.error("Error en la inicialización de la aplicación:", error);
-            showMessageModal("Error", "Error al inicializar la aplicación. Intenta de nuevo.");
+            console.error("Error en la inicializaciÃ³n de la aplicaciÃ³n:", error);
+            showMessageModal("Error", "Error al inicializar la aplicaciÃ³n. Intenta de nuevo.");
         }
     }
-        setupModal();
-            setupAccordion();
-            setupFaq();
-            setupMenu();
-            setupContactForm();
-            setTimeout(setupCarousel, 100);
+    setupModal();
+    setupAccordion();
+    setupFaq();
+    setupMenu();
+    setupContactForm();
+    setTimeout(setupHeroCarousel, 100);
+    setTimeout(setupTestimonialsCarousel, 100);
     initApp();
 });

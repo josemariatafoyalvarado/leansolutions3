@@ -18,99 +18,172 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
 </head>
 <body>
+    
+    <!-- Fondo animado con Three.js -->
     <canvas id="webgl-bg"></canvas>
 
-    <div class="floating-logo">
-        <a href="index.html"><img src="logo.png" alt="Lean Solutions"></a>
-    </div>
+    <!-- Encabezado y Navegación -->
+    <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
+        <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
+            <div class="floating-logo">
+                <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
+            </div>
 
-    <button class="menu-toggle-button" id="open-menu-btn">
-        <i class="fas fa-ellipsis-v"></i>
-    </button>
-
-    <div class="sidebar-menu" id="sidebar-menu">
-        <button class="close-menu-button" id="close-menu-btn">&times;</button>
-        <nav id="nav-links">
-            <a href="index.html">Inicio</a>
-            <a href="services.html">Servicios</a>
-            <a href="about.html">Acerca</a>
-            <a href="contact.html">Contacto</a>
-            <button id="login-btn">Acceso</button>
-            <button id="panel-btn" style="display:none;">Panel</button>
-            <button id="logout-btn" style="display:none;">Cerrar sesión</button>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-white hover:text-gray-300 transition-colors duration-200">Inicio</a>
+                <a href="services.html" class="text-white hover:text-gray-300 transition-colors duration-200">Servicios</a>
+                <a href="about.html" class="text-white hover:text-gray-300 transition-colors duration-200">Acerca</a>
+                <a href="contact.html" class="text-white hover:text-gray-300 transition-colors duration-200">Contacto</a>
+                <button id="login-btn-desktop" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-200">Acceso</button>
+                <button id="panel-btn-desktop" style="display:none;" class="bg-gray-700 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200">Panel</button>
+                <button id="logout-btn-desktop" style="display:none;" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-200">Cerrar sesión</button>
+            </div>
+            <button class="md:hidden text-white text-2xl" id="menu-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
-    </div>
+    </header>
+
+    <!-- Menú lateral para dispositivos móviles -->
+    <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
+        <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
+        <nav class="flex flex-col items-center pt-20">
+            <a href="index.html" class="text-white text-lg py-4 hover:text-gray-300">Inicio</a>
+            <a href="services.html" class="text-white text-lg py-4 hover:text-gray-300">Servicios</a>
+            <a href="about.html" class="text-white text-lg py-4 hover:text-gray-300">Acerca</a>
+            <a href="contact.html" class="text-white text-lg py-4 hover:text-gray-300">Contacto</a>
+            <button id="login-btn-mobile" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Acceso</button>
+            <button id="panel-btn-mobile" style="display:none;" class="mt-4 bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-gray-600">Panel</button>
+            <button id="logout-btn-mobile" style="display:none;" class="mt-4 bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700">Cerrar sesión</button>
+        </nav>
+    </aside>
 
     <main>
+        
+        <!-- Sección de Héroe de Servicios -->
         <section class="hero-section hero relative w-full h-screen flex flex-col justify-center items-center text-white">
             <div class="hero-content relative z-10 text-center max-w-4xl px-4 animate__animated animate__fadeInUp">
-                <h1 class="font-playfair-display text-5xl md:text-6xl font-bold leading-tight drop-shadow-lg">Transformamos tu negocio y tu formación</h1>
-                <p class="mt-4 text-xl md:text-2xl font-light drop-shadow-md">Nuestra consultoría y capacitación de alto impacto te brindan las herramientas y estrategias para alcanzar el éxito, optimizando cada proceso y potenciando tu crecimiento.</p>
+                <h1 class="font-playfair-display text-5xl md:text-6xl font-bold leading-tight drop-shadow-lg">Servicios de Consultoría y Capacitación</h1>
+                <p class="mt-4 text-xl md:text-2xl font-light drop-shadow-md">Nuestras soluciones personalizadas están diseñadas para impulsar la eficiencia, la innovación y el crecimiento sostenible de tu organización.</p>
                 <div class="flex flex-col md:flex-row gap-4 mt-8 justify-center">
                     <button class="cta-button" onclick="window.location.href='#services'">Explorar servicios <i class="fas fa-arrow-right ml-2"></i></button>
-                    <a href="contact.html" class="secondary-cta-button">Contactar <i class="fas fa-paper-plane ml-2"></i></a>
+                    <a href="contact.html" class="secondary-cta-button">Contáctanos <i class="fas fa-paper-plane ml-2"></i></a>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="services-section glass-card">
-            <h2 class="section-title">Nuestros Servicios de Impacto</h2>
-            <div class="service-cards-grid">
-                <div class="sub-service-card transform-business-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-chart-line service-icon"></i>
+        <!-- Sección de Nuestras Soluciones -->
+        <section id="services" class="services-section">
+            <h2 class="section-title">Nuestras Soluciones de Impacto</h2>
+            <!-- Usando grid de Tailwind para una cuadrícula 2x2 en pantallas medianas y grandes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 text-center mx-auto max-w-4xl">
+                <!-- Estrategia y Eficiencia Operativa -->
+                <div class="sub-service-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="service-icon-container bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto shadow-lg">
+                        <i class="fas fa-chart-line service-icon text-2xl"></i>
                     </div>
-                    <h3>Estrategia y Eficiencia Operativa</h3>
-                    <p>Diseñamos e implementamos estrategias de optimización para maximizar la productividad, reducir costos y mejorar el rendimiento general de tu empresa.</p>
+                    <h3 class="text-xl font-bold mb-2">Estrategia y Eficiencia Operativa</h3>
+                    <p class="text-gray-300 text-sm">Diseñamos e implementamos estrategias de optimización para maximizar la productividad, reducir costos y mejorar el rendimiento general de tu empresa.</p>
                 </div>
-                <div class="sub-service-card transform-tech-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-robot service-icon"></i>
+                <!-- Inteligencia de Negocio y IA -->
+                <div class="sub-service-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="service-icon-container bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto shadow-lg">
+                        <i class="fas fa-robot service-icon text-2xl"></i>
                     </div>
-                    <h3>Inteligencia de Negocio y IA</h3>
-                    <p>Utilizamos análisis de datos avanzados y modelos predictivos para generar insights valiosos, permitiendo una toma de decisiones más rápida y precisa.</p>
+                    <h3 class="text-xl font-bold mb-2">Inteligencia de Negocio y IA</h3>
+                    <p class="text-gray-300 text-sm">Utilizamos análisis de datos avanzados y modelos predictivos para generar insights valiosos, permitiendo una toma de decisiones más rápida y precisa.</p>
                 </div>
-                <div class="sub-service-card transform-growth-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-seedling service-icon"></i>
+                <!-- Desarrollo para Microempresas -->
+                <div class="sub-service-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="service-icon-container bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto shadow-lg">
+                        <i class="fas fa-seedling service-icon text-2xl"></i>
                     </div>
-                    <h3>Desarrollo para Microempresas</h3>
-                    <p>Asesoramos a startups y microempresas en la construcción de bases sólidas para un crecimiento sostenible, ayudándoles a innovar y competir en el mercado.</p>
+                    <h3 class="text-xl font-bold mb-2">Desarrollo para Microempresas</h3>
+                    <p class="text-gray-300 text-sm">Asesoramos a startups y microempresas en la construcción de bases sólidas para un crecimiento sostenible, ayudándoles a innovar y competir en el mercado.</p>
                 </div>
-                <div class="sub-service-card transform-training-card">
-                    <div class="service-icon-container">
-                        <i class="fas fa-graduation-cap service-icon"></i>
+                <!-- Capacitación y Talento -->
+                <div class="sub-service-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="service-icon-container bg-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto shadow-lg">
+                        <i class="fas fa-graduation-cap service-icon text-2xl"></i>
                     </div>
-                    <h3>Capacitación y Talento</h3>
-                    <p>Programas de formación especializados que empoderan a tus equipos o a tu carrera profesional con las habilidades más demandadas en el mundo de los negocios y la tecnología.</p>
+                    <h3 class="text-xl font-bold mb-2">Capacitación y Talento</h3>
+                    <p class="text-gray-300 text-sm">Programas de formación especializados que empoderan a tus equipos o a tu carrera profesional con las habilidades más demandadas en el mundo de los negocios y la tecnología.</p>
                 </div>
             </div>
         </section>
-
-        <section class="testimonials-section glass-card">
+        
+                <!-- Sección de Testimonios -->
+        <section class="testimonials-section">
             <h2 class="section-title">Testimonios</h2>
             <div class="owl-carousel owl-theme testimonials-carousel">
                 <div class="item">
-                    <img src="https://via.placeholder.com/150" alt="Empresa 1">
+                    <img src="dos caminos.jpg" alt="Brew Company">
                     <div class="testimonial-text">
                         <p>"Lean Solutions nos ayudó a optimizar nuestros procesos y aumentar la eficiencia general. Su asesoría fue excepcional."</p>
                     </div>
                 </div>
                 <div class="item">
-                    <img src="https://via.placeholder.com/150" alt="Empresa 2">
+                    <img src="moda gye.jpeg" alt="Fashion Store">
                     <div class="testimonial-text">
                         <p>"Los cursos para estudiantes son muy completos y prácticos. Recomiendo Lean Solutions para quienes quieren destacar."</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <section class="cta-section glass-card">
-            <h2>Eleva tu negocio o tu formación al siguiente nivel</h2>
+        
+        <!-- Sección de Precios -->
+        <section id="pricing" class="pricing-section glass-card">
+            <h2 class="section-title">Nuestros Paquetes de Consultoría</h2>
+            <div class="pricing-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Paquete Básico -->
+                <div class="pricing-card p-8 rounded-3xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-2">Paquete Básico</h3>
+                    <p class="price text-4xl font-extrabold text-blue-500 my-4">$500<small class="text-lg text-gray-400 font-normal">/mes</small></p>
+                    <ul class="text-left space-y-2 my-6 text-gray-300">
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> 5 horas de consultoría</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Análisis de procesos</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Reporte mensual</li>
+                        <li class="text-gray-500"><i class="fas fa-times-circle text-red-400 mr-2"></i> Soporte 24/7</li>
+                        <li class="text-gray-500"><i class="fas fa-times-circle text-red-400 mr-2"></i> Acceso a todos los cursos</li>
+                    </ul>
+                    <a href="contact.html" class="cta-button w-full block mt-auto">Empezar</a>
+                </div>
+                <!-- Paquete Premium -->
+                <div class="pricing-card p-8 rounded-3xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-2">Paquete Premium</h3>
+                    <p class="price text-4xl font-extrabold text-blue-500 my-4">$1,200<small class="text-lg text-gray-400 font-normal">/mes</small></p>
+                    <ul class="text-left space-y-2 my-6 text-gray-300">
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> 15 horas de consultoría</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Análisis de procesos</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Reporte mensual detallado</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Soporte prioritario</li>
+                        <li class="text-gray-500"><i class="fas fa-times-circle text-red-400 mr-2"></i> Acceso a todos los cursos</li>
+                    </ul>
+                    <a href="contact.html" class="cta-button w-full block mt-auto">Empezar</a>
+                </div>
+                <!-- Paquete Empresarial -->
+                <div class="pricing-card p-8 rounded-3xl text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-2">Paquete Empresarial</h3>
+                    <p class="price text-4xl font-extrabold text-blue-500 my-4">Personalizado</p>
+                    <ul class="text-left space-y-2 my-6 text-gray-300">
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Consultoría ilimitada</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Análisis completo de la empresa</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Reportes semanales</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Soporte 24/7</li>
+                        <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Acceso a todos los cursos</li>
+                    </ul>
+                    <a href="contact.html" class="cta-button w-full block mt-auto">Cotizar</a>
+                </div>
+            </div>
+        </section>
+        <!-- Sección de Llamada a la Acción -->
+        <section class="cta-section glass-card flex flex-col items-center justify-center">
+            <h2 class="section-title">Eleva tu negocio o tu formación al siguiente nivel</h2>
             <a href="contact.html"><button class="cta-button">Contáctanos</button></a>
         </section>
     </main>
 
+    <!-- Modal de Acceso -->
     <div id="login-modal" class="modal">
       <div class="modal-content">
         <span class="close-button">&times;</span>
@@ -133,10 +206,12 @@
       </div>
     </div>
 
+    <!-- Pie de página -->
     <footer>
         <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Scripts externos -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script type="module" src="app.js"></script>
