@@ -5,139 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Cursos - Lean Solutions</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --azul-oscuro: #0f1c33;
-            --azul-claro: #6EA8D8;
-            --gris-claro: #F5F5F5;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--azul-oscuro);
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* Fondo con degradado animado */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #1D2A4D, #0f1c33);
-            transition: background 0.5s ease;
-            z-index: -1;
-        }
-
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 15px 50px;
-            background: rgba(18, 26, 49, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        header .logo img {
-            height: 60px;
-            width: auto;
-            display: block;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-            transition: transform 0.3s ease;
-        }
-
-        header .logo img:hover {
-            transform: scale(1.05);
-        }
-        
-        nav { display: flex; align-items: center; gap: 20px; }
-        nav a, nav button {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-        
-        nav a:hover, nav button:hover {
-            color: var(--azul-claro);
-            transform: translateY(-2px);
-        }
-        
-        #logout-btn {
-            background-color: var(--azul-claro);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: background 0.3s ease;
-        }
-        
-        #logout-btn:hover {
-            background-color: #4b89b3;
-        }
-
-        footer { 
-            background-color: rgba(18, 26, 49, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white; 
-            text-align: center; 
-            padding: 20px;
-            margin-top: auto; 
-        }
-
-        /* Estilos especÃ­ficos del Dashboard */
-        .dashboard-container {
-            flex: 1;
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 40px;
-            color: white;
-        }
-
-        .hero-section {
-            padding: 60px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .hero-section h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        
-        .hero-section p {
-            font-size: 1.5rem;
-            font-weight: 500;
-            opacity: 0.8;
-            margin-top: 10px;
-        }
-
+        /* La mayoría de los estilos son manejados por style.css y Tailwind, solo se dejan los específicos del layout */
         .course-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -146,14 +27,13 @@
         }
 
         .course-item {
-            position: relative;
             padding: 30px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            /* Usamos variables de style.css */
+            background: var(--card-bg);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
@@ -161,21 +41,8 @@
             transform: translateY(-10px);
             box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.2);
         }
-
-        .course-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .course-item:hover .course-image {
-            transform: scale(1.02);
-        }
-
+        
+        /* Estilos de la barra de progreso */
         .progress-container {
             width: 100%;
             height: 12px;
@@ -188,7 +55,8 @@
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #6EA8D8, #3e7fb6);
+            /* Usamos la variable de acento para consistencia */
+            background: linear-gradient(90deg, var(--azul-claro), var(--secondary-accent));
             border-radius: 9999px;
             width: 0%;
             position: relative;
@@ -205,119 +73,48 @@
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
-
-        .button-continue {
-            display: inline-block;
-            margin-top: 20px;
-            background: linear-gradient(45deg, #6EA8D8, #4b89b3);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 9999px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-align: center;
-        }
-
-        .button-continue:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Modal para mensajes */
-        .message-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .message-content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            max-width: 400px;
-            width: 90%;
-            color: var(--azul-oscuro);
-        }
-
-        .message-content h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .message-content p {
-            font-size: 1rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .message-content button {
-            background-color: var(--azul-claro);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-
-        .message-content button:hover {
-            background-color: #4b89b3;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 15px 20px;
-            }
-            nav {
-                margin-top: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .dashboard-container {
-                padding: 20px;
-                margin: 20px;
-            }
-            .hero-section {
-                padding: 30px;
-            }
-            .course-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
-    <div class="animated-bg"></div>
+<body>
+    
+    <canvas id="webgl-bg"></canvas>
 
-    <header>
-        <div class="logo">
-            <a href="index.html">
-                <img src="https://storage.googleapis.com/gcn-file-assets/image_be4d81.jpg" alt="Lean Solutions" class="h-16 w-auto block p-2 rounded-full shadow-md">
-            </a>
-        </div>
-        <nav>
-            <a href="panel.html" class="font-bold text-lg">Panel</a>
-            <a href="mis-cursos.html" class="font-bold text-lg">Mis Cursos</a>
-            <a href="about.html" class="font-bold text-lg">Acerca</a>
-            <button id="logout-btn" class="bg-[#6EA8D8] py-3 px-5 rounded-md text-white font-bold cursor-pointer hover:bg-[#4b89b3]">Cerrar sesión</button>
+    <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
+        <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
+            <div class="floating-logo">
+                <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-white hover:text-gray-300 transition-colors duration-200">Inicio</a>
+                <a href="services.html" class="text-white hover:text-gray-300 transition-colors duration-200">Servicios</a>
+                <a href="about.html" class="text-white hover:text-gray-300 transition-colors duration-200">Acerca</a>
+                <a href="contact.html" class="text-white hover:text-gray-300 transition-colors duration-200">Contacto</a>
+                <button id="login-btn-desktop" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-200">Acceso</button>
+                <button id="panel-btn-desktop" style="display:none;" class="bg-gray-700 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200">Panel</button>
+                <button id="logout-btn-desktop" style="display:none;" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-200">Cerrar sesión</button>
+            </div>
+            <button class="md:hidden text-white text-2xl" id="menu-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
+    <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
+        <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
+        <nav class="flex flex-col items-center pt-20">
+            <a href="index.html" class="text-white text-lg py-4 hover:text-gray-300">Inicio</a>
+            <a href="services.html" class="text-white text-lg py-4 hover:text-gray-300">Servicios</a>
+            <a href="about.html" class="text-white text-lg py-4 hover:text-gray-300">Acerca</a>
+            <a href="contact.html" class="text-white text-lg py-4 hover:text-gray-300">Contacto</a>
+            <button id="login-btn-mobile" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Acceso</button>
+            <button id="panel-btn-mobile" style="display:none;" class="mt-4 bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-gray-600">Panel</button>
+            <button id="logout-btn-mobile" style="display:none;" class="mt-4 bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700">Cerrar sesión</button>
+        </nav>
+    </aside>
+
     <main class="flex-grow">
-        <div class="dashboard-container">
-            <div class="hero-section">
+        <div class="dashboard-container max-w-7xl mx-auto p-4 md:p-10 mt-8">
+            <div class="hero-section text-center mb-10 p-6">
                 <h1 class="text-white text-5xl font-bold mb-4">¡Bienvenido de nuevo!</h1>
                 <p class="text-white text-xl font-medium opacity-70">Continúa tu camino hacia el éxito y la mejora continua.</p>
             </div>
@@ -331,7 +128,7 @@
                         <div class="progress-bar" data-progress="70"></div>
                         <span class="progress-text">70%</span>
                     </div>
-                    <button class="button-continue w-full">Continuar</button>
+                    <a href="#" class="button-continue w-full text-center">Continuar</a>
                 </div>
 
                 <div class="course-item">
@@ -342,7 +139,7 @@
                         <div class="progress-bar" data-progress="45"></div>
                         <span class="progress-text">45%</span>
                     </div>
-                    <button class="button-continue w-full">Continuar</button>
+                    <a href="#" class="button-continue w-full text-center">Continuar</a>
                 </div>
 
                 <div class="course-item">
@@ -353,7 +150,7 @@
                         <div class="progress-bar" data-progress="20"></div>
                         <span class="progress-text">20%</span>
                     </div>
-                    <button class="button-continue w-full">Continuar</button>
+                    <a href="#" class="button-continue w-full text-center">Continuar</a>
                 </div>
                 
                 <div class="course-item">
@@ -364,7 +161,7 @@
                         <div class="progress-bar" data-progress="0"></div>
                         <span class="progress-text">0%</span>
                     </div>
-                    <button class="button-continue w-full">Comenzar</button>
+                    <a href="#" class="button-continue w-full text-center">Comenzar</a>
                 </div>
             </div>
         </div>
@@ -377,138 +174,92 @@
             <button id="message-close-btn" class="bg-[#6EA8D8] py-2 px-6 rounded-md text-white font-bold cursor-pointer hover:bg-[#4b89b3]">Cerrar</button>
         </div>
     </div>
+    
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="modal-close-btn">&times;</span>
+        <h2 class="text-2xl font-bold mb-4 text-center text-[#1D2A4D]">Acceso a Lean Solutions</h2>
+        <form id="auth-form" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div id="error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
+          <div class="flex justify-between items-center space-x-4">
+            <button type="button" id="register-btn" class="w-1/2 bg-[#6EA8D8] py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-[#4b89b3]">Registrarse</button>
+            <button type="button" id="signin-btn" class="w-1/2 bg-[#1D2A4D] py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-[#0f1c33]">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <footer>
         <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
     </footer>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="webgl-script.js"></script>
+    <script type="module" src="app.js"></script>
+    
+    <script>
+        // JS para la animación de las barras de progreso
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                const progress = bar.getAttribute('data-progress');
+                // Usa GSAP para una animación de carga suave
+                gsap.to(bar, { width: progress + '%', duration: 1.5, ease: "power2.out", delay: 0.5 });
+            });
+            
+            // GSAP Animations for content
+            gsap.from(".hero-section h1", { opacity: 0, y: 50, duration: 1.2, ease: "power4.out" });
+            gsap.from(".hero-section p", { opacity: 0, y: 50, duration: 1.2, ease: "power4.out", delay: 0.3 });
 
-        // Global variables provided by the Canvas environment
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let auth;
-        let db;
+            // Animación de los cursos al entrar en vista
+            gsap.from(".course-item", {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: "power3.out",
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: ".course-grid",
+                    start: "top 80%",
+                }
+            });
+            
+            // Event listener para los botones de Continuar (para usar el modal de mensajes manejado por app.js)
+            document.querySelectorAll('.button-continue').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Como el modal de mensajes está en el DOM, se asume que app.js lo inicializa.
+                    // Se usa una función global si app.js la expone, o si no se usa un enlace directo.
+                    // Para ser más robustos, mantendremos la función para mostrar el modal aquí si app.js no la expone.
+                    
+                    const messageModal = document.getElementById('message-modal');
+                    const messageTitle = document.getElementById('message-title');
+                    const messageText = document.getElementById('message-text');
+                    const messageCloseBtn = document.getElementById('message-close-btn');
 
-        const messageModal = document.getElementById('message-modal');
-        const messageTitle = document.getElementById('message-title');
-        const messageText = document.getElementById('message-text');
-        const messageCloseBtn = document.getElementById('message-close-btn');
+                    if (messageModal) {
+                        messageTitle.textContent = "Continuar Curso";
+                        messageText.textContent = "¡Vamos a seguir aprendiendo! Esta funcionalidad está en desarrollo.";
+                        messageModal.style.display = 'flex';
+                        
+                        const closeMessageModal = () => messageModal.style.display = 'none';
 
-        function showMessageModal(title, text) {
-            if (messageModal) {
-                messageTitle.textContent = title;
-                messageText.textContent = text;
-                messageModal.style.display = 'flex';
-            }
-        }
-
-        function closeMessageModal() {
-            if (messageModal) {
-                messageModal.style.display = 'none';
-            }
-        }
-
-        const setupFirebase = () => {
-            if (Object.keys(firebaseConfig).length === 0) {
-                console.error("Firebase config is empty. Please check the Canvas environment.");
-                return;
-            }
-            try {
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                onAuthStateChanged(auth, user => {
-                    if (!user) {
-                        window.location.href = "index.html";
+                        messageCloseBtn.onclick = closeMessageModal;
+                        window.onclick = (event) => {
+                            if (event.target === messageModal) {
+                                closeMessageModal();
+                            }
+                        };
                     }
                 });
-
-                if (initialAuthToken) {
-                    signInWithCustomToken(auth, initialAuthToken).catch(error => {
-                        console.error("Error signing in with custom token:", error);
-                        signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed:", error));
-                    });
-                } else {
-                    signInAnonymously(auth).catch(error => console.error("Anonymous sign-in failed:", error));
-                }
-
-                const logoutBtn = document.getElementById('logout-btn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        signOut(auth).then(() => {
-                            console.log("Sesión cerrada correctamente.");
-                            window.location.href = "index.html";
-                        }).catch((error) => {
-                            console.error("Error al cerrar sesión:", error);
-                            showMessageModal("Error", "No se pudo cerrar la sesión.");
-                        });
-                    });
-                }
-
-                // Animate progress bars on page load
-                document.querySelectorAll('.progress-bar').forEach(bar => {
-                    const progress = bar.getAttribute('data-progress');
-                    bar.style.width = progress + '%';
-                });
-
-                // Set up event listeners for continue buttons
-                document.querySelectorAll('.button-continue').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        showMessageModal("Continuar Curso", "¡Vamos a seguir aprendiendo! Esta funcionalidad está en desarrollo.");
-                    });
-                });
-                
-                if (messageCloseBtn) {
-                    messageCloseBtn.addEventListener('click', closeMessageModal);
-                }
-                
-                window.addEventListener('click', (event) => {
-                    if (event.target === messageModal) {
-                        closeMessageModal();
-                    }
-                });
-
-            } catch (error) {
-                console.error("Error initializing Firebase:", error);
-                showMessageModal("Error", "Error al inicializar la aplicación. Por favor, intenta de nuevo.");
-            }
-        };
-
-        window.onload = setupFirebase;
-
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Animación del hero section al cargar
-        gsap.from(".hero-section h1", { opacity: 0, y: 50, duration: 1.2, ease: "power4.out" });
-        gsap.from(".hero-section p", { opacity: 0, y: 50, duration: 1.2, ease: "power4.out", delay: 0.3 });
-
-        // Animación de los cursos al entrar en vista
-        gsap.from(".course-item", {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            ease: "power3.out",
-            stagger: 0.2,
-            scrollTrigger: {
-                trigger: ".course-grid",
-                start: "top 80%",
-            }
-        });
-        
-        // Animación del fondo con el mouse
-        const bg = document.querySelector('.animated-bg');
-        document.addEventListener('mousemove', e => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            bg.style.transform = `translate(${x}px, ${y}px)`;
+            });
         });
     </script>
 </body>

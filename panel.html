@@ -5,74 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Privado - Lean Solutions</title>
 
-    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        /* Estilos específicos de Panel, la mayoría serán absorbidos por style.css y tailwind */
         :root {
-            --azul-oscuro: #121A31;
-            --azul-claro: #6EA8D8;
-            --gris-claro: #f4f4f4;
-            --particle-color: rgba(255, 255, 255, 0.1);
-            --particle-size: 2px;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--azul-oscuro);
-            color: white;
-            position: relative;
-            overflow-x: hidden;
+            --azul-oscuro: #0c0f1c; /* Coincide con --bg-color de style.css para consistencia */
+            --azul-claro: #4a69bd; /* Coincide con --accent-color de style.css */
         }
         
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        body::before {
-            background: radial-gradient(circle at 10% 20%, #1a233b, transparent 50%),
-                        radial-gradient(circle at 80% 90%, #1a233b, transparent 50%);
-            animation: gradient-anim 15s ease-in-out infinite;
-        }
-
-        @keyframes gradient-anim {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(5%, 5%); }
-            100% { transform: translate(0, 0); }
-        }
-
-        .header {
-            background-color: transparent;
-            backdrop-filter: blur(10px);
-            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header.scrolled {
-            background-color: rgba(18, 26, 49, 0.8);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .panel-container {
-            position: relative;
-            z-index: 10;
+        /* Aseguramos que el fondo del panel se vea bien, usando la clase page-container de index */
+        .page-container {
+            padding-top: 100px; /* Espacio para el header fijo */
+            min-height: calc(100vh - 80px); /* Ajuste del footer */
         }
 
         .section-card {
             border-radius: 12px;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: var(--card-bg); /* Usamos la variable de style.css */
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color); /* Usamos la variable de style.css */
             transition: all 0.3s ease;
             transform-style: preserve-3d;
         }
@@ -83,11 +41,11 @@
         }
         
         .section-card h2, .section-card p {
-            color: #E2E8F0;
+            color: var(--text-color);
         }
 
         .section-card svg {
-            color: #6EA8D8;
+            color: var(--accent-color);
         }
         
         .progress-circle {
@@ -100,55 +58,64 @@
             color: white;
             font-size: 1.5rem;
             font-weight: bold;
-            background: conic-gradient(#6EA8D8 var(--progress), rgba(255, 255, 255, 0.1) var(--progress));
-        }
-        
-        #nav-links a, #nav-links button {
-            transition: color 0.3s, background-color 0.3s, transform 0.3s;
+            background: conic-gradient(var(--accent-color) var(--progress), rgba(255, 255, 255, 0.1) var(--progress));
         }
 
-        #nav-links a:hover {
-            color: #6EA8D8;
+        .message-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            text-align: center;
         }
-
-        #logout-btn {
-            background-color: #6EA8D8;
-        }
-        
     </style>
 </head>
 <body class="flex flex-col min-h-screen font-sans">
     
-    <!-- Particles animation -->
-    <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10">
-        <canvas id="particles-canvas" class="w-full h-full"></canvas>
-    </div>
+    <canvas id="webgl-bg"></canvas>
 
-    <!-- Header -->
-    <header id="main-header" class="header text-white flex justify-between items-center py-4 px-10 shadow-lg">
-        <div class="logo">
-            <a href="index.html">
-                <img src="https://placehold.co/100x64/1D2A4D/white?text=Lean+Solutions" alt="Lean Solutions" class="h-16 w-auto block p-2 rounded-full shadow-md">
-            </a>
-        </div>
-        <nav id="nav-links" class="flex items-center space-x-5">
-            <a href="index.html" class="font-bold text-lg transition-colors">Inicio</a>
-            <a href="mis-cursos.html" class="font-bold text-lg transition-colors">Cursos</a>
-            <a href="contact.html" class="font-bold text-lg transition-colors">Soporte</a>
-            <a href="#" class="font-bold text-lg transition-colors">Mi cuenta</a>
-            <button id="logout-btn" class="border-none py-3 px-5 rounded-md text-white font-bold cursor-pointer transition-colors hover:bg-[#4b89b3]">Cerrar sesión</button>
+    <header class="fixed w-full top-0 left-0 z-50 bg-transparent backdrop-blur-md">
+        <nav class="container mx-auto flex justify-between items-center py-4 px-6 md:px-8">
+            <div class="floating-logo">
+                <a href="index.html"><img src="logo.svg" alt="Lean Solutions" class="h-10 md:h-12 w-auto"></a>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-white hover:text-gray-300 transition-colors duration-200">Inicio</a>
+                <a href="services.html" class="text-white hover:text-gray-300 transition-colors duration-200">Servicios</a>
+                <a href="about.html" class="text-white hover:text-gray-300 transition-colors duration-200">Acerca</a>
+                <a href="contact.html" class="text-white hover:text-gray-300 transition-colors duration-200">Contacto</a>
+                <button id="login-btn-desktop" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-200" style="display:none;">Acceso</button>
+                <button id="panel-btn-desktop" class="bg-gray-700 text-white px-4 py-2 rounded-full hover:bg-gray-600 transition-colors duration-200" style="display:none;">Panel</button>
+                <button id="logout-btn-desktop" class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-200" style="display:none;">Cerrar sesión</button>
+            </div>
+            <button class="md:hidden text-white text-2xl" id="menu-toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     </header>
 
-    <!-- Panel de Contenido -->
-    <div class="panel-container p-10 rounded-xl shadow-2xl mx-auto my-8 w-11/12 max-w-6xl flex-grow">
+    <aside class="sidebar-menu fixed top-0 right-0 w-64 h-full bg-slate-900 bg-opacity-90 backdrop-blur-md z-[1001] transform translate-x-full transition-transform duration-300" id="sidebar-menu">
+        <button class="close-menu-button absolute top-4 right-4 text-white text-3xl" id="close-menu-btn">&times;</button>
+        <nav class="flex flex-col items-center pt-20">
+            <a href="index.html" class="text-white text-lg py-4 hover:text-gray-300">Inicio</a>
+            <a href="services.html" class="text-white text-lg py-4 hover:text-gray-300">Servicios</a>
+            <a href="about.html" class="text-white text-lg py-4 hover:text-gray-300">Acerca</a>
+            <a href="contact.html" class="text-white text-lg py-4 hover:text-gray-300">Contacto</a>
+            <button id="login-btn-mobile" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700" style="display:none;">Acceso</button>
+            <button id="panel-btn-mobile" class="mt-4 bg-gray-700 text-white px-6 py-3 rounded-full hover:bg-gray-600" style="display:none;">Panel</button>
+            <button id="logout-btn-mobile" class="mt-4 bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700" style="display:none;">Cerrar sesión</button>
+        </nav>
+    </aside>
+
+    <main class="page-container p-4 md:p-10 mx-auto w-11/12 max-w-6xl flex-grow">
         <div class="text-center mb-10 p-6 rounded-lg bg-gray-50 bg-opacity-5">
             <h1 class="text-4xl font-bold text-white mb-2">Bienvenido al Panel de Alumnos</h1>
             <p id="user-display" class="text-xl text-gray-300"></p>
         </div>
         
         <div class="dashboard-sections grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Tarjeta de Progreso Personal -->
             <div id="progress-card" class="section-card p-8 flex flex-col items-center justify-center text-center">
                 <h2 class="text-2xl font-semibold mb-4">Mi Progreso</h2>
                 <div class="progress-circle shadow-inner mb-4" style="--progress: 75%">
@@ -158,7 +125,6 @@
             </div>
             
 
-            <!-- Tarjeta de Soporte -->
             <div id="ticket-btn" class="section-card p-8 text-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto mb-4 transition-transform duration-300 group-hover:rotate-12" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -167,7 +133,6 @@
                 <p class="text-gray-400">Levanta un ticket para agendar asesoría personalizada.</p>
             </div>
             
-            <!-- Tarjeta de Material de Consulta -->
             <div id="material-btn" class="section-card p-8 text-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto mb-4 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6l-6-6z"></path>
@@ -176,7 +141,6 @@
                 <p class="text-gray-400">Accede a artículos, guías y documentos disponibles.</p>
             </div>
             
-            <!-- Tarjeta de Cursos Disponibles -->
             <div id="available-courses-btn" class="section-card p-8 text-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto mb-4 transition-transform duration-300 group-hover:rotate-6" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 3a9 9 0 0 0-9 9 9 9 0 0 0 9 9 9 9 0 0 0 9-9c0-.66-.1-1.3-.29-1.89l-1.9 1.9c.07.12.12.26.12.4v1.5H16v-2h-2V7.5a2.5 2.5 0 0 0-5 0v2h2v1.5h-2.5a.5.5 0 0 1-.5-.5V8a1 1 0 0 0-.5-1.5c-2.45-1.63-5.32 1.45-4 5.38.16.5.24 1.02.24 1.59 0 4.14 3.36 7.5 7.5 7.5s7.5-3.36 7.5-7.5c0-1.83-.66-3.5-1.74-4.83l-1.46-1.46A9 9 0 0 0 12 3zm2 4.5V9h-2V7.5h2z"></path>
@@ -185,18 +149,22 @@
                 <p class="text-gray-400">Explora los cursos que ofrecemos actualmente.</p>
             </div>
 
-            <!-- Tarjeta de Mis Cursos -->
             <a href="mis-cursos.html" id="my-courses-btn" class="section-card p-8 text-center cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mx-auto mb-4 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 18H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zM9 14H7v-2h2zm4 0h-2v-2h2zm4 0h-2v-2h2zM9 10H7V8h2zm4 0h-2V8h2zm4 0h-2V8h2z"></path>
                 </svg>
                 <h2 class="text-2xl font-semibold mb-2">Mis Cursos</h2>
                 <p class="text-gray-400">Revisa los cursos que has adquirido y tu progreso.</p>
-            </div>
+            </a>
+            
+            <a href="micuenta.html" id="my-account-btn" class="section-card p-8 text-center cursor-pointer">
+                <i class="fas fa-user-circle w-24 h-24 mx-auto mb-4 text-4xl transition-transform duration-300 group-hover:scale-110"></i>
+                <h2 class="text-2xl font-semibold mb-2">Mi Cuenta</h2>
+                <p class="text-gray-400">Administra tu perfil, información y configuraciones.</p>
+            </a>
         </div>
-    </div>
+    </main>
     
-    <!-- Modal para mensajes -->
     <div id="message-modal" class="message-modal fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="message-content bg-white p-8 rounded-lg shadow-xl text-center">
             <h3 id="message-title" class="font-bold text-xl text-[#1D2A4D] mb-4"></h3>
@@ -204,86 +172,36 @@
             <button id="message-close-btn" class="bg-[#6EA8D8] py-2 px-6 rounded-md text-white font-bold cursor-pointer hover:bg-[#4b89b3]">Cerrar</button>
         </div>
     </div>
+    
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="modal-close-btn">&times;</span>
+        <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Acceso a Lean Solutions</h2>
+        <form id="auth-form" class="space-y-4">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+            <input type="password" id="password" name="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2">
+          </div>
+          <div id="error-message" class="text-red-500 mt-2 hidden text-center font-semibold"></div>
+          <div class="flex justify-between items-center space-x-4">
+            <button type="button" id="register-btn" class="w-1/2 bg-[#6EA8D8] py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-[#4b89b3]">Registrarse</button>
+            <button type="button" id="signin-btn" class="w-1/2 bg-[#1D2A4D] py-3 px-5 rounded-md text-white font-bold transition-colors hover:bg-[#0f1c33]">Iniciar Sesión</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-    <!-- Footer -->
     <footer class="bg-[#1D2A4D] bg-opacity-50 text-white text-center py-5 mt-auto">
         <p>Copyright © 2025 Lean Solutions. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- Script de la aplicación (solo un archivo por página) -->
-    <script type="module" src="main.js"></script>
-
-    <!-- Script de partículas y scroll del header (específico para esta página) -->
-    <script>
-        // JS para el efecto del header al hacer scroll
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Código para la animación de partículas
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const numParticles = 50;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < numParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.size > 0.2) this.size -= 0.01;
-                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.size = Math.random() * 2 + 1;
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('load', () => {
-            resizeCanvas();
-            animate();
-        });
-        
-        window.addEventListener('resize', resizeCanvas);
-    </script>
-</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="webgl-script.js"></script>
+    <script type="module" src="app.js"></script>
+    
+    </body>
 </html>
