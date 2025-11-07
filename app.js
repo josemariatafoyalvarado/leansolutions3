@@ -13,33 +13,102 @@ import {
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Corregido: "DOM Cargado. Inicializando la aplicación."
     console.log("DOM Cargado. Inicializando la aplicación.");
 
-    // ===============================================
-    // CÓDIGO AÑADIDO PARA LA TRANSICIÓN DEL HEADER CON GSAP
-    // ===============================================
-    // Comprueba si GSAP está cargado antes de usarlo
-    if (typeof gsap !== 'undefined') {
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        
+        // 1. Animación del Header
         gsap.from("header", {
-            y: -100, // Comienza 100px por encima de su posición final
-            opacity: 0, // Comienza invisible
-            duration: 1.8, // Duración de la animación en segundos
-            ease: "power3.out", // Curva de suavidad para un efecto más elegante
-            delay: 0.3 // Pequeño retraso para que inicie después de la carga inicial
+            y: -100, 
+            opacity: 0, 
+            duration: 1.2, 
+            ease: "power3.out", 
+            delay: 0.3 
         });
-    }
-    // ===============================================
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAAXJ-wklT3mfxdQO16DDwmAriYxroiEKA",
-      authDomain: "cursos-7ae54.firebaseapp.com",
-      projectId: "cursos-7ae54",
-      storageBucket: "cursos-7ae54.appspot.com",
-      messagingSenderId: "356389037138",
-      appId: "1:356389037138:web:bdc9cd1c2a8acfd2bbab8b",
-      measurementId: "G-XV8TV6P3Z1"
+        // 1.1 Animación del Contenido del Hero
+        gsap.from(".hero-content > *", { 
+            opacity: 0, 
+            y: 50, 
+            stagger: 0.3, 
+            duration: 1.2, 
+            ease: "power2.out",
+            delay: 0.8 
+        });
+
+        // 2. Animación para la Sección de Soluciones Destacadas (Courses)
+        // Animación del título de sección
+        gsap.from(".courses-section .section-title", {
+            opacity: 0,
+            y: -30,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".courses-section", 
+                start: "top 85%", 
+            }
+        });
+
+        // Animación para cada 'Course Item' - Entrada escalonada desde la izquierda con efecto de muelle
+        gsap.from(".course-item", {
+            opacity: 0,
+            x: -30,
+            duration: 1.0,
+            stagger: 0.2, 
+            ease: "back.out(0.8)",
+            scrollTrigger: {
+                trigger: ".course-accordion",
+                start: "top 85%",
+                toggleActions: "play none none none" 
+            }
+        });
+
+        // 3. Animación para la Sección 'Preguntas Frecuentes' (FAQ)
+        // Animación del título de sección
+        gsap.from(".faq-section .section-title", {
+            opacity: 0,
+            scale: 0.9,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".faq-section",
+                start: "top 80%", 
+            }
+        });
+        
+        // Animación de los ítems FAQ (slide-up simple)
+        gsap.from(".faq-item", {
+            opacity: 0,
+            x: 0,
+            y: 50, 
+            duration: 0.7,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".faq-section",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        // NOTA: Se eliminó el bloque de código GSAP duplicado para .course-item que causaba conflictos.
+        
+        // 4. Animación para el Footer
+        gsap.from("footer", {
+            opacity: 0,
+            y: 30,
+            duration: 1.0,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: "footer",
+                start: "top 95%", 
+                toggleActions: "play none none none"
+            }
+        });
+    } else {
+        console.warn("GSAP o ScrollTrigger no están cargados. Las animaciones por scroll no se ejecutarán.");
     };
+
 
     let auth;
     let db; 
@@ -47,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Referencias de Elementos del DOM
     const loginModal = document.getElementById('login-modal');
-    // CORRECCIÓN DE LOGIN: Apunta al ID que se usa en el HTML más reciente
     const errorMessage = document.getElementById('login-error-message');  
     const loginBtnDesktop = document.getElementById('login-btn-desktop');
     const loginBtnMobile = document.getElementById('login-btn-mobile');
@@ -160,17 +228,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * CORRECCIÓN DE MENÚ LATERAL:
-     * 1. Se mantiene el e.stopPropagation() en el botón de abrir.
-     * 2. Se asegura que el listener de documento solo cierre el menú si está abierto.
-     */
     function setupMenu() {
         const menuToggleButton = document.getElementById('menu-toggle-btn');
         if (menuToggleButton && sidebarMenu && closeMenuButton) {
             // 1. Abrir menú
             menuToggleButton.addEventListener('click', (e) => {
-                e.stopPropagation(); // SOLUCIÓN: Evita el conflicto del click fuera
+                e.stopPropagation(); 
                 sidebarMenu.classList.add('open');
             });
             
@@ -181,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 3. Cerrar menú (Click fuera)
             document.addEventListener('click', (e) => {
-                // Solo intenta cerrar si el menú está actualmente abierto
                 if (sidebarMenu.classList.contains('open') && !sidebarMenu.contains(e.target) && !menuToggleButton.contains(e.target)) {
                     sidebarMenu.classList.remove('open');
                 }
@@ -226,6 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =======================================================
+    // AJUSTE CLAVE: Refactorización de la lógica del acordeón
+    // Se implementa un toggle más robusto similar al de FAQ.
+    // =======================================================
     function setupAccordion() {
         const courseItems = document.querySelectorAll('.course-item');
         if (courseItems.length > 0) {
@@ -235,24 +301,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (header) {
                     header.addEventListener('click', () => {
-                        const isActive = item.classList.contains('active');
-
-                        // Cierra todos los demás
+                        // 1. Cierra todos los demás ítems abiertos (acordeón de uno a la vez)
                         document.querySelectorAll('.course-item.active').forEach(activeItem => {
-                            activeItem.classList.remove('active');
-                            const activeIcon = activeItem.querySelector('.toggle-icon');
-                            if (activeIcon) {
-                                activeIcon.classList.remove('fa-minus');
-                                activeIcon.classList.add('fa-plus');
+                            if (activeItem !== item) { // Solo cierra si NO es el ítem clickeado
+                                activeItem.classList.remove('active');
+                                const otherIcon = activeItem.querySelector('.toggle-icon');
+                                if (otherIcon) {
+                                    otherIcon.classList.remove('fa-minus');
+                                    otherIcon.classList.add('fa-plus');
+                                }
                             }
                         });
 
-                        // Abre el actual si no estaba activo
-                        if (!isActive) {
-                            item.classList.add('active');
-                            if (icon) {
+                        // 2. Alterna la clase 'active' del ítem actual.
+                        // Esto garantiza que el contenido se ABRA si estaba cerrado o se CIERRE si estaba abierto.
+                        item.classList.toggle('active');
+
+                        // 3. Actualiza el ícono basándose en el NUEVO estado del ítem
+                        if (icon) {
+                            if (item.classList.contains('active')) {
                                 icon.classList.remove('fa-plus');
                                 icon.classList.add('fa-minus');
+                            } else {
+                                icon.classList.remove('fa-minus');
+                                icon.classList.add('fa-plus');
                             }
                         }
                     });
@@ -260,6 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+    // =======================================================
 
     function setupFaq() {
         const faqItems = document.querySelectorAll('.faq-item');
@@ -315,7 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = document.getElementById('contact-email').value;
                 const message = document.getElementById('contact-message').value;
 
-                // Corregido: 'Por favor, completa todos los campos.'
                 if (!name || !email || !message) {
                     formMessage.textContent = 'Por favor, completa todos los campos.';
                     formMessage.className = 'text-red-500 mt-4';
@@ -323,7 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 console.log('Formulario enviado:', { name, email, message });
-                // Corregido: '¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.'
                 showMessageModal('¡Mensaje Enviado!', '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.');
                 contactForm.reset();
             });
@@ -338,7 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         const email = emailInput.value;
         const password = passwordInput.value;
-        // Corregido: 'Por favor, ingresa un correo y una contraseña.'
         if (!email || !password) {
             displayError('Por favor, ingresa un correo y una contraseña.');
             return;
@@ -355,18 +425,14 @@ document.addEventListener('DOMContentLoaded', () => {
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
-            // Corregido: 'Error de registro. Por favor, intenta de nuevo.'
             let message = 'Error de registro. Por favor, intenta de nuevo.';
             switch(error.code) {
-                // Corregido: 'El correo electrónico ya está en uso. Por favor, inicia sesión.'
                 case 'auth/email-already-in-use':
                     message = 'El correo electrónico ya está en uso. Por favor, inicia sesión.';
                     break;
-                // Corregido: 'La contraseña debe tener al menos 6 caracteres.'
                 case 'auth/weak-password':
                     message = 'La contraseña debe tener al menos 6 caracteres.';
                     break;
-                // Corregido: 'El correo electrónico no es válido.'
                 case 'auth/invalid-email':
                     message = 'El correo electrónico no es válido.';
                     break;
@@ -382,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearError();
         const email = emailInput.value;
         const password = passwordInput.value;
-        // Corregido: 'Por favor, ingresa un correo y una contraseña.'
         if (!email || !password) {
             displayError('Por favor, ingresa un correo y una contraseña.');
             return;
@@ -392,16 +457,13 @@ document.addEventListener('DOMContentLoaded', () => {
             closeLoginModal();
             window.location.replace("panel.html");
         } catch (error) {
-            // Corregido: 'Error de inicio de sesión. Revisa tu correo y contraseña.'
             let message = 'Error de inicio de sesión. Revisa tu correo y contraseña.';
             switch(error.code) {
                 case 'auth/invalid-credential':
                 case 'auth/wrong-password':
                 case 'auth/user-not-found':
-                    // Corregido: 'Credenciales inválidas. Revisa tu correo y contraseña.'
                     message = 'Credenciales inválidas. Revisa tu correo y contraseña.';
                     break;
-                // Corregido: 'El correo electrónico no es válido.'
                 case 'auth/invalid-email':
                     message = 'El correo electrónico no es válido.';
                     break;
@@ -422,7 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
         panelButtons.forEach(btnId => {
             const button = document.getElementById(btnId);
             if (button) {
-                // Corregido: 'Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!'
                 button.addEventListener('click', () => {
                     showMessageModal('Funcionalidad en Desarrollo', 'Esta sección estará disponible en una futura actualización. ¡Gracias por tu paciencia!');
                 });
@@ -474,7 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     await signOut(auth);
                     window.location.replace("index.html"); 
                 } catch (error) {
-                    // Corregido: "Error al cerrar sesión:" y "No se pudo cerrar la sesión correctamente."
                     console.error("Error al cerrar sesión:", error);
                     showMessageModal("Error", "No se pudo cerrar la sesión correctamente.");
                 }
@@ -490,13 +550,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (panelBtnMobile) panelBtnMobile.addEventListener('click', handlePanel);
 
         } catch (error) {
-            // Corregido: "Error en la inicialización de la aplicación:" y "Error al inicializar la aplicación. Intenta de nuevo."
             console.error("Error en la inicialización de la aplicación:", error);
             showMessageModal("Error", "Error al inicializar la aplicación. Intenta de nuevo.");
         }
     }
 
-    // Corregido: "Inicialización de la aplicación"
     // Inicialización de la aplicación
     setupModal();
     setupAccordion();

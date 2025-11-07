@@ -18,6 +18,8 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     padding-top: 80px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Base de Contenedor y Centrado */
@@ -99,18 +101,17 @@ nav {
     transform: translateY(-2px);
 }
 
-/* --------------------
-    Menú Móvil (CORREGIDO: Usa transform: translateX)
+/* -------------------
+    Menú Móvil
    -------------------- */
 .sidebar-menu {
     position: fixed;
     top: 0;
-    right: 0; /* Anclado al borde derecho */
+    right: 0;
     width: 250px;
     height: 100%;
     background: rgba(18, 22, 38, 0.95);
     backdrop-filter: blur(15px);
-    /* Usamos transform para mejor rendimiento y para solucionar el problema de despliegue */
     transform: translateX(100%); 
     transition: transform 0.3s ease-in-out; 
     padding-top: 60px;
@@ -120,7 +121,7 @@ nav {
 }
 
 .sidebar-menu.open {
-    transform: translateX(0); /* Se desliza a su posición normal */
+    transform: translateX(0);
 }
 
 .close-menu-button {
@@ -230,7 +231,7 @@ section {
 }
 
 /* --------------------
-    Hero Carousel (Limpio y Estándar)
+    Hero Carousel
    -------------------- */
 .hero-carousel {
     position: relative;
@@ -281,7 +282,7 @@ section {
     Cursos y FAQ (Acordeones)
    -------------------- */
 .course-accordion,
-.faq-section {
+.faq-section > div { 
     max-width: 800px;
     margin: 0 auto;
 }
@@ -312,19 +313,40 @@ section {
     border-radius: 10px;
     background: var(--hover-bg);
     transition: all 0.3s ease;
+    /* Aseguramos que el contenedor padre para el icono tenga position: relative */
+    position: relative; 
 }
 
 .course-header h3 {
     margin: 0;
     display: flex;
     align-items: center;
+    /* AJUSTE CRUCIAL: Permite que el título se encoja para dar espacio al icono */
+    flex-shrink: 1; 
 }
 
+/* Base Transition y Z-index */
 .toggle-icon {
     transition: transform 0.3s ease;
+    z-index: 10;
 }
 
-.course-item.active .toggle-icon,
+/* AJUSTE CRUCIAL: Posicionamiento Absoluto para el Icono de Curso */
+.course-header .toggle-icon {
+    /* Sacamos el ícono del flujo flex para que el título no lo empuje */
+    position: absolute;
+    right: 1.5rem; /* Anclado al borde derecho, igual que el padding */
+    top: 50%; /* Centrado vertical */
+    transform: translateY(-50%); /* Ajuste fino para centrado */
+}
+
+/* Estado Activo para Icono de Curso */
+.course-item.active .toggle-icon {
+    /* Combinamos el centrado vertical con la rotación */
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* Estado Activo para Icono de FAQ (no necesita el translateY por su layout) */
 .faq-item.active .toggle-icon {
     transform: rotate(180deg);
 }
@@ -368,7 +390,7 @@ footer {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 10000;
     left: 0;
     top: 0;
     width: 100%;
@@ -440,13 +462,57 @@ footer {
     Responsividad
    -------------------- */
 @media (max-width: 767px) {
-    /* La clase .md\:flex se oculta correctamente en móviles por defecto */
+    /* Oculta la navegación de desktop en móviles */
     .md\:flex {
         display: none !important;
     }
 
+    /* Ajusta el tamaño del logo en móviles */
     .logo img {
       height: 40px;
+    }
+    
+    /* 🔥 FIX: SOLUCIÓN CLAVE PARA ALINEACIÓN DE TÍTULOS DE CURSOS 🔥 */
+    
+    .course-header h3 {
+        /* Sobrescribe display: flex para permitir que el texto se envuelva */
+        **display: block !important;** /* Centra el texto dentro del nuevo bloque (soluciona el 'corte') */
+        **text-align: center;**
+        /* Asegura que el texto centrado no choque con el ícono de toggle absoluto */
+        **padding-right: 2.5rem;** padding-left: 0;
+    }
+
+    /* Ajustes de Márgenes/Padding Estéticos para la Sección de Cursos */
+    .courses-section {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .course-accordion {
+        width: 100%;
+        padding: 0 5px; 
+        box-sizing: border-box; 
+    }
+    .glass-card, .faq-item {
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 1rem;
+    }
+    .course-item {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    /* Centrado de elementos como el botón .cta-button dentro del acordeón abierto */
+    .course-item.active .course-details {
+        text-align: center; 
+    }
+    
+    /* Fuerza que las listas (UL/OL) no se centren y mantengan la alineación izquierda */
+    .course-details ul, 
+    .course-details ol {
+        text-align: left;
+        padding-left: 20px;
     }
 }
 

@@ -1,0 +1,6 @@
+# Excluye archivos de configuración con secretos
+config.js
+
+# Otros archivos comunes a ignorar
+node_modules
+.DS_Store
