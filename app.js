@@ -109,15 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn("GSAP o ScrollTrigger no están cargados. Las animaciones por scroll no se ejecutarán.");
     }
 
-    // Configuración de Firebase
-        const firebaseConfig = {
-    apiKey: __FIREBASE_API_KEY__,
-    authDomain: __FIREBASE_AUTH_DOMAIN__,
-    projectId: __FIREBASE_PROJECT_ID__,
-    storageBucket: __FIREBASE_STORAGE_BUCKET__,
-    messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
-    appId: __FIREBASE_APP_ID__,
-    measurementId: __FIREBASE_MEASUREMENT_ID__
+    const firebaseConfig = {
+    apiKey: "AIzaSyAAXJ-wklT3mfxdQO16DDwmAriYxroiEKA",
+    authDomain: "cursos-7ae54.firebaseapp.com",
+    projectId: "cursos-7ae54",
+    storageBucket: "cursos-7ae54.firebasestorage.app",
+    messagingSenderId: "356389037138",
+    appId: "1:356389037138:web:bdc9cd1c2a8acfd2bbab8b",
+    measurementId: "G-XV8TV6P3Z1"
     };
 
     let auth;
